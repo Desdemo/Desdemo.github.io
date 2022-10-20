@@ -7,25 +7,25 @@
   <meta name="MobileOptimized" content="320">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, maximum-scale=1" />
   <meta name="author" content="Desdemo">
-  <meta name="description" content="使用备忘">
+  <meta name="description" content="Naviproxy搭建记录">
   
-  <meta property="og:title" content="Hugo&#43;github action 记录" />
-<meta property="og:description" content="使用备忘" />
+  <meta property="og:title" content="Naviproxy搭建" />
+<meta property="og:description" content="Naviproxy搭建记录" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://desdemo.top/blog/2021-09/hugo-github-action-%E8%AE%B0%E5%BD%95/" /><meta property="article:section" content="blog" />
-<meta property="article:published_time" content="2021-09-03T17:08:35+08:00" />
-<meta property="article:modified_time" content="2021-09-03T17:08:35+08:00" />
+<meta property="og:url" content="https://desdemo.top/blog/2022-10/naviproxy%E6%90%AD%E5%BB%BA/" /><meta property="article:section" content="blog" />
+<meta property="article:published_time" content="2022-10-20T15:11:58+08:00" />
+<meta property="article:modified_time" content="2022-10-20T15:11:58+08:00" />
 
 
 
 
   <title>
   
-       Hugo&#43;github action 记录 | Desdemo 
+       Naviproxy搭建 | Desdemo 
   
   </title>
 
-  <link rel="canonical" href="https://desdemo.top/blog/2021-09/hugo-github-action-%E8%AE%B0%E5%BD%95/">
+  <link rel="canonical" href="https://desdemo.top/blog/2022-10/naviproxy%E6%90%AD%E5%BB%BA/">
 
   
   
@@ -367,19 +367,19 @@
   
   
   
-    <li><a href="https://desdemo.top/series/%E8%BF%81%E7%A7%BB%E5%A4%87%E5%BF%98"><i class="fas fa-bookmark pr-1" aria-hidden="true"></i>迁移备忘</a></li>
+    <li><a href="https://desdemo.top/series/%E6%95%99%E7%A8%8B"><i class="fas fa-bookmark pr-1" aria-hidden="true"></i>教程</a></li>
   
 
   </ul>
-  <div class="px-4 post-heading">Hugo&#43;github action 记录</div>
+  <div class="px-4 post-heading">Naviproxy搭建</div>
 <ul class="post-meta li-x mt-1">
   
-    <li>Sep 3, 2021</li>
+    <li>Oct 20, 2022</li>
   
 
   
     <li class="middot"></li>
-    <li>1 minute read</li>
+    <li>2 minute read</li>
   
 </ul>
 
@@ -389,48 +389,62 @@
 
 
           <div class="post-content markdown">
-            <h1 id="hugo--github-action-记录">Hugo + github action 记录</h1>
-<h2 id="1准备">1、准备</h2>
-<p>先把源码拉下来</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh">git clone https://github.com/Desdemo/xxxx.git
-git submodule add https://github.com/EliiseS/AllinOne.git themes/AllinOne
-</code></pre></div><h2 id="2配置github-action">2、配置github action</h2>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">Deploy Hugo Site to Github Pages on Master Branch</span><span class="w">
-</span><span class="w">
-</span><span class="w"></span><span class="nt">on</span><span class="p">:</span><span class="w">
-</span><span class="w">  </span><span class="nt">push</span><span class="p">:</span><span class="w">
-</span><span class="w">    </span><span class="nt">branches</span><span class="p">:</span><span class="w">
-</span><span class="w">      </span>- <span class="l">master</span><span class="w">
-</span><span class="w">
-</span><span class="w"></span><span class="nt">jobs</span><span class="p">:</span><span class="w">
-</span><span class="w">  </span><span class="nt">build-deploy</span><span class="p">:</span><span class="w">
-</span><span class="w">    </span><span class="nt">runs-on</span><span class="p">:</span><span class="w"> </span><span class="l">ubuntu-18.04</span><span class="w">
-</span><span class="w">    </span><span class="nt">steps</span><span class="p">:</span><span class="w">
-</span><span class="w">      </span>- <span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l">actions/checkout@v2 </span><span class="w"> </span><span class="c"># v2 does not have submodules option now</span><span class="w">
-</span><span class="w">        </span><span class="nt">with</span><span class="p">:</span><span class="w">
-</span><span class="w">          </span><span class="nt">submodules</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
-</span><span class="w">          </span><span class="nt">fetch-depth</span><span class="p">:</span><span class="w"> </span><span class="m">0</span><span class="w">    </span><span class="c"># Fetch all history for .GitInfo and .Lastmod</span><span class="w">
-</span><span class="w">
-</span><span class="w">      </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">Setup Hugo</span><span class="w">
-</span><span class="w">        </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l">peaceiris/actions-hugo@v2</span><span class="w">
-</span><span class="w">        </span><span class="nt">with</span><span class="p">:</span><span class="w">
-</span><span class="w">          </span><span class="nt">hugo-version</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;0.81.0&#39;</span><span class="w">
-</span><span class="w">          </span><span class="nt">extended</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
-</span><span class="w">
-</span><span class="w">      </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">Build</span><span class="w">
-</span><span class="w">        </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l">hugo --minify</span><span class="w">
-</span><span class="w">
-</span><span class="w">      </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">Deploy</span><span class="w">
-</span><span class="w">        </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l">peaceiris/actions-gh-pages@v3</span><span class="w">
-</span><span class="w">        </span><span class="nt">with</span><span class="p">:</span><span class="w">
-</span><span class="w">          </span><span class="nt">deploy_key</span><span class="p">:</span><span class="w"> </span><span class="l">${{ secrets.HUGO }}</span><span class="w"> </span><span class="c"># 这里的 ACTIONS_DEPLOY_KEY 则是上面设置 Private Key的变量名</span><span class="w">
-</span><span class="w">          </span><span class="nt">external_repository</span><span class="p">:</span><span class="w"> </span><span class="l">xxxx/xxxx.github.io</span><span class="w"> </span><span class="c"># Pages 远程仓库 </span><span class="w">
-</span><span class="w">          </span><span class="nt">publish_dir</span><span class="p">:</span><span class="w"> </span><span class="l">./public</span><span class="w">
-</span><span class="w">          </span><span class="nt">keep_files</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w"> </span><span class="c"># remove existing files</span><span class="w">
-</span><span class="w">          </span><span class="nt">publish_branch</span><span class="p">:</span><span class="w"> </span><span class="l">master </span><span class="w"> </span><span class="c"># deploying branch</span><span class="w">
-</span><span class="w">          </span><span class="nt">commit_message</span><span class="p">:</span><span class="w"> </span><span class="l">${{ github.event.head_commit.message }} </span><span class="w">
-</span><span class="w">          </span><span class="nt">cname</span><span class="p">:</span><span class="w"> </span><span class="l">xxxx.com</span><span class="w"> </span><span class="c"># 个人域名</span><span class="w">
-</span></code></pre></div>
+            <p>参考链接:</p>
+<p>1、https://github.com/klzgrad/naiveproxy</p>
+<p>2、https://github.com/bolucat/naive</p>
+<h1 id="1服务端构建">1、服务端构建</h1>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="c1">#查看golang版本</span>
+go version
+<span class="c1">#如果版本太低的话，需要升级golang</span>
+apt-get remove golang
+apt-get remove golang-go
+apt-get autoremove
+<span class="c1"># 以go1.18.5版本为例</span>
+wget https://golang.google.cn/dl/go1.18.5.linux-amd64.tar.gz
+sudo tar xfz go1.18.5.linux-amd64.tar.gz -C /usr/local
+sudo vim /etc/profile
+<span class="nb">cd</span> ~
+vim .bashrc
+go env -w <span class="nv">GOPROXY</span><span class="o">=</span><span class="s2">&#34;https://goproxy.cn&#34;</span>
+</code></pre></div><p>安装caddy</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash">go install github.com/caddyserver/xcaddy/cmd/xcaddy@latest
+<span class="c1"># 在golang环境变量中找到GOBIN查看路径，如果为空则会安装到GOROOT或GOPATH路径下的bin目录中</span>
+<span class="c1"># go env </span>
+<span class="c1"># 构建</span>
+xcaddy build --with github.com/caddyserver/forwardproxy@caddy2<span class="o">=</span>github.com/klzgrad/forwardproxy@naive
+<span class="c1"># 构建完成后同目录下 可以看到caddy可执行程序</span>
+<span class="c1"># 编写Caddyfile</span>
+mkdir /etc/caddy
+vim /etc/caddy/Caddyfile
+</code></pre></div><p>Caddyfile文件示例</p>
+<p>将自己的域名 邮箱 user passwd 替换上</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-Go" data-lang="Go"><span class="p">:</span><span class="mi">443</span><span class="p">,</span> <span class="nx">domain</span><span class="p">.</span><span class="nx">com</span>  <span class="err">#</span><span class="nx">你的域名</span>
+<span class="nx">tls</span> <span class="nx">aaa</span><span class="err">@</span><span class="nx">mail</span><span class="p">.</span><span class="nx">com</span>  <span class="err">#</span> <span class="nx">邮箱</span>
+<span class="nx">route</span> <span class="p">{</span>
+ <span class="nx">forward_proxy</span> <span class="p">{</span>
+   <span class="nx">basic_auth</span> <span class="nx">user</span> <span class="nx">passwd</span>
+   <span class="nx">hide_ip</span>
+   <span class="nx">hide_via</span>
+   <span class="nx">probe_resistance</span>
+  <span class="p">}</span>
+ <span class="nx">file_server</span> <span class="p">{</span>
+        <span class="nx">root</span> <span class="o">/</span><span class="kd">var</span><span class="o">/</span><span class="nx">www</span><span class="o">/</span><span class="nx">html</span>
+ <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div><p>然后测试运行下</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash">caddy run --config /etc/caddy/Caddyfile
+</code></pre></div><p>如果一切正常，可以将caddy改为守护进程方式</p>
+<p>参考：https://github.com/klzgrad/naiveproxy/wiki/Run-Caddy-as-a-daemon</p>
+<h1 id="2windows使用">2、windows使用</h1>
+<p>参考：https://github.com/bolucat/naive#windows-users</p>
+<h1 id="3移动端使用">3、移动端使用</h1>
+<p>可以使用 Shadowrocket</p>
+<p><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
+<h1 id="4防坑">4、防坑</h1>
+<p>1、https是caddy自动申请的</p>
+<p>2、申请证书之前要把防火墙端口打开</p>
+<p>3、caddyfile可以设置跳转到其他网站，也可以自己部署个静态服务</p>
+
           </div>
 
           
@@ -443,7 +457,7 @@ git submodule add https://github.com/EliiseS/AllinOne.git themes/AllinOne
   <li class="pr-0"><a href="https://desdemo.top/tags/"><i class="fas fa-tags"></i></a></li>
   <div class="tags-sm">
     
-      <li><a href="https://desdemo.top/tags/hugo" role="button">hugo </a></li>
+      <li><a href="https://desdemo.top/tags/proxy" role="button">proxy </a></li>
       
     
   </div>
@@ -459,23 +473,16 @@ git submodule add https://github.com/EliiseS/AllinOne.git themes/AllinOne
           <div class="row pt-3">
             <div class="col-md-6">
               
-                <a href=https://desdemo.top/blog/2021-07/%E5%BC%80%E5%8F%91%E8%A7%84%E8%8C%83/ class="post-meta">Previous
+                <a href=https://desdemo.top/blog/2022-03/golanges%E4%BD%BF%E7%94%A8%E8%AE%B0%E5%BD%9501/ class="post-meta">Previous
                   <div class="pt-2 pb-5 d-flex">
                     <i class="fas fa-angle-left text-grey font-weight-bold mr-2 active-color"></i>
-                    <span>开发规范</span>
+                    <span>GolangES使用记录(01)</span>
                   </div>
                 </a>
               
             </div>
             
             <div class="col-md-6 text-right" >
-              
-                <a href=https://desdemo.top/blog/2021-09/golang-reflect-%E5%88%9D%E8%AF%8601/ class="post-meta">Next
-                  <div class="pt-2 pb-5 flex-reverse">
-                    <i class="fas fa-angle-right text-grey font-weight-bold ml-2 active-color"></i>
-                    <span>golang reflect 初识01 </span>
-                  </div>
-                </a>
               
             </div>
           </div>
@@ -521,8 +528,8 @@ git submodule add https://github.com/EliiseS/AllinOne.git themes/AllinOne
 								
 
 										<li class="nav-item">
-						 					<a class="nav-link" href="#hugo--github-action-%e8%ae%b0%e5%bd%95">
-												 Hugo &#43; github action 记录
+						 					<a class="nav-link" href="#1%e6%9c%8d%e5%8a%a1%e7%ab%af%e6%9e%84%e5%bb%ba">
+												 1、服务端构建
 											</a>
 										</li>
 						 
@@ -540,19 +547,15 @@ git submodule add https://github.com/EliiseS/AllinOne.git themes/AllinOne
 								
 									<ul class="nav">
 								
-									<ul class="nav">
-								
 								
 
 										<li class="nav-item">
-						 					<a class="nav-link" href="#1%e5%87%86%e5%a4%87">
-												 1、准备
+						 					<a class="nav-link" href="#2windows%e4%bd%bf%e7%94%a8">
+												 2、windows使用
 											</a>
 										</li>
 						 
 								
-								
-									</ul>
 								
 									</ul>
 								
@@ -566,19 +569,37 @@ git submodule add https://github.com/EliiseS/AllinOne.git themes/AllinOne
 								
 									<ul class="nav">
 								
-									<ul class="nav">
-								
 								
 
 										<li class="nav-item">
-						 					<a class="nav-link" href="#2%e9%85%8d%e7%bd%aegithub-action">
-												 2、配置github action
+						 					<a class="nav-link" href="#3%e7%a7%bb%e5%8a%a8%e7%ab%af%e4%bd%bf%e7%94%a8">
+												 3、移动端使用
 											</a>
 										</li>
 						 
 								
 								
 									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#4%e9%98%b2%e5%9d%91">
+												 4、防坑
+											</a>
+										</li>
+						 
+								
 								
 									</ul>
 								
