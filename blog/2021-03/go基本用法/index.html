@@ -391,26 +391,26 @@
           <div class="post-content markdown">
             <h1 id="go-指针">go 指针</h1>
 <h2 id="1函数内传指针会改变原值">1、函数内传指针会改变原值</h2>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="kd">type</span> <span class="nx">A</span> <span class="kd">struct</span> <span class="p">{</span>
-	<span class="nx">Age</span> <span class="kt">int</span>
-<span class="p">}</span>
-
-<span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
-	<span class="nx">a</span> <span class="o">:=</span> <span class="o">&amp;</span><span class="nx">A</span><span class="p">{</span><span class="nx">Age</span><span class="p">:</span> <span class="mi">1</span><span class="p">}</span>
-	<span class="nf">Changed</span><span class="p">(</span><span class="o">*</span><span class="nx">a</span><span class="p">)</span>
-	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">a</span><span class="p">)</span>  <span class="c1">// &amp;{1}
-</span><span class="c1"></span>	<span class="nf">RealChanged</span><span class="p">(</span><span class="nx">a</span><span class="p">)</span>
-	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">a</span><span class="p">)</span> <span class="c1">// &amp;{999}
-</span><span class="c1"></span><span class="p">}</span>
-
-<span class="kd">func</span> <span class="nf">Changed</span><span class="p">(</span><span class="nx">a</span> <span class="nx">A</span><span class="p">)</span> <span class="p">{</span>
-	<span class="nx">a</span><span class="p">.</span><span class="nx">Age</span> <span class="p">=</span> <span class="mi">666</span>
-<span class="p">}</span>
-
-<span class="kd">func</span> <span class="nf">RealChanged</span><span class="p">(</span><span class="nx">a</span> <span class="o">*</span><span class="nx">A</span><span class="p">)</span> <span class="p">{</span>
-	<span class="nx">a</span><span class="p">.</span><span class="nx">Age</span> <span class="p">=</span> <span class="mi">999</span>
-<span class="p">}</span>
-</code></pre></div>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kd">type</span> <span class="nx">A</span> <span class="kd">struct</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">Age</span> <span class="kt">int</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">a</span> <span class="o">:=</span> <span class="o">&amp;</span><span class="nx">A</span><span class="p">{</span><span class="nx">Age</span><span class="p">:</span> <span class="mi">1</span><span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="nf">Changed</span><span class="p">(</span><span class="o">*</span><span class="nx">a</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">a</span><span class="p">)</span>  <span class="c1">// &amp;{1}
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nf">RealChanged</span><span class="p">(</span><span class="nx">a</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">a</span><span class="p">)</span> <span class="c1">// &amp;{999}
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">Changed</span><span class="p">(</span><span class="nx">a</span> <span class="nx">A</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">a</span><span class="p">.</span><span class="nx">Age</span> <span class="p">=</span> <span class="mi">666</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">RealChanged</span><span class="p">(</span><span class="nx">a</span> <span class="o">*</span><span class="nx">A</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">a</span><span class="p">.</span><span class="nx">Age</span> <span class="p">=</span> <span class="mi">999</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div>
           </div>
 
           
@@ -601,7 +601,7 @@
 
   
   <div class="copyright py-4">
-    <span>  2016 - 2022 &copy; | Theme <a href='https://github.com/EliiseS/AllinOne' target="_blank">AllinOne</a> </span>
+    <span>  2016 - 2023 &copy; | Theme <a href='https://github.com/EliiseS/AllinOne' target="_blank">AllinOne</a> </span>
   </div>
   
 

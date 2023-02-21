@@ -392,19 +392,19 @@
             <h1 id="git">git</h1>
 <h2 id="设置git-代理">设置git 代理</h2>
 <p>分别设置http和https代理，根据代理协议的不同分别设置</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"> git config --global http.proxy <span class="s1">&#39;socks5://127.0.0.1:10808&#39;</span> 
- git config --global https.proxy <span class="s1">&#39;socks5://127.0.0.1:10808&#39;</span>
-<span class="c1"># git config --global https.proxy &#39;http://127.0.0.1:10808&#39;</span>
-<span class="c1"># git config --global https.proxy &#39;http://127.0.0.1:10808&#39;</span>
-</code></pre></div><p>goframe <code>gf</code>工具  生成代码</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">gf  gen  model  -t  table  -l  <span class="s2">&#34;mysql:user:password@tcp(ip:3306)/database&#34;</span>
-</code></pre></div><h1 id="hugo-博客本地设置">hugo 博客本地设置</h1>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">// 先拉取项目
-git clone https://github.com/Desdemo/xxxxx.git
-// 主题是通过git submodule 关联的，所以需要单独拉取
-git submodule init
-git submodule update
-</code></pre></div>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"> git config --global http.proxy <span class="s1">&#39;socks5://127.0.0.1:10808&#39;</span> 
+</span></span><span class="line"><span class="cl"> git config --global https.proxy <span class="s1">&#39;socks5://127.0.0.1:10808&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># git config --global https.proxy &#39;http://127.0.0.1:10808&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># git config --global https.proxy &#39;http://127.0.0.1:10808&#39;</span>
+</span></span></code></pre></div><p>goframe <code>gf</code>工具  生成代码</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">gf  gen  model  -t  table  -l  <span class="s2">&#34;mysql:user:password@tcp(ip:3306)/database&#34;</span>
+</span></span></code></pre></div><h1 id="hugo-博客本地设置">hugo 博客本地设置</h1>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">// 先拉取项目
+</span></span><span class="line"><span class="cl">git clone https://github.com/Desdemo/xxxxx.git
+</span></span><span class="line"><span class="cl">// 主题是通过git submodule 关联的，所以需要单独拉取
+</span></span><span class="line"><span class="cl">git submodule init
+</span></span><span class="line"><span class="cl">git submodule update
+</span></span></code></pre></div>
           </div>
 
           
@@ -617,7 +617,7 @@ git submodule update
 
   
   <div class="copyright py-4">
-    <span>  2016 - 2022 &copy; | Theme <a href='https://github.com/EliiseS/AllinOne' target="_blank">AllinOne</a> </span>
+    <span>  2016 - 2023 &copy; | Theme <a href='https://github.com/EliiseS/AllinOne' target="_blank">AllinOne</a> </span>
   </div>
   
 

@@ -391,55 +391,55 @@
           <div class="post-content markdown">
             <h1 id="nsq安装">Nsq安装</h1>
 <h2 id="docker安装">docker安装</h2>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="c1"># nsqlookupd</span>
-docker run --restart<span class="o">=</span>always --name lookupd -p 4160:4160 -p 4161:4161 -d nsqio/nsq /nsqlookupd
-<span class="c1"># nsqd</span>
-docker run --restart<span class="o">=</span>always --name nsqd -p 4150:4150 -p 4151:4151 -d nsqio/nsq /nsqd -max-req-timeout<span class="o">=</span>336h --broadcast-address<span class="o">=</span>192.168.0.252 --lookupd-tcp-address<span class="o">=</span>192.168.0.252:4160
-<span class="c1"># nsqadmin</span>
-docker run --restart<span class="o">=</span>always -d --restart<span class="o">=</span>always --name nsqadmin -p 4171:4171 nsqio/nsq /nsqadmin --lookupd-http-address<span class="o">=</span>192.168.0.252:4161
-</code></pre></div><h2 id="踩坑记录">踩坑记录</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="c1"># nsqlookupd</span>
+</span></span><span class="line"><span class="cl">docker run --restart<span class="o">=</span>always --name lookupd -p 4160:4160 -p 4161:4161 -d nsqio/nsq /nsqlookupd
+</span></span><span class="line"><span class="cl"><span class="c1"># nsqd</span>
+</span></span><span class="line"><span class="cl">docker run --restart<span class="o">=</span>always --name nsqd -p 4150:4150 -p 4151:4151 -d nsqio/nsq /nsqd -max-req-timeout<span class="o">=</span>336h --broadcast-address<span class="o">=</span>192.168.0.252 --lookupd-tcp-address<span class="o">=</span>192.168.0.252:4160
+</span></span><span class="line"><span class="cl"><span class="c1"># nsqadmin</span>
+</span></span><span class="line"><span class="cl">docker run --restart<span class="o">=</span>always -d --restart<span class="o">=</span>always --name nsqadmin -p 4171:4171 nsqio/nsq /nsqadmin --lookupd-http-address<span class="o">=</span>192.168.0.252:4161
+</span></span></code></pre></div><h2 id="踩坑记录">踩坑记录</h2>
 <p>业务中有用到延时消息的情况，但是发现只要延时超过1小时就会报错，经过查询才知道有个参数<code>max-req-timeout</code>代表NSQ允许的最大延时时间。</p>
 <p>下面是NSQ的基本配置参数</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">-auth-http-address<span class="o">=</span>: &lt;addr&gt;:&lt;port&gt; 查询授权服务器 <span class="o">(</span>可能会给多次<span class="o">)</span>
--broadcast-address<span class="o">=</span><span class="s2">&#34;&#34;</span>: 通过 lookupd  注册的地址（默认名是 OS）
--config<span class="o">=</span><span class="s2">&#34;&#34;</span>: 配置文件路径
--data-path<span class="o">=</span><span class="s2">&#34;&#34;</span>: 缓存消息的磁盘路径
--deflate<span class="o">=</span>true: 运行协商压缩特性（客户端压缩）
--e2e-processing-latency-percentile<span class="o">=</span>: 消息处理时间的百分比（通过逗号可以多次指定，默认为 none）
--e2e-processing-latency-window-time<span class="o">=</span>10m0s: 计算这段时间里，点对点时间延迟（例如，60s 仅计算过去 <span class="m">60</span> 秒）
--http-address<span class="o">=</span><span class="s2">&#34;0.0.0.0:4151&#34;</span>: 为 HTTP 客户端监听 &lt;addr&gt;:&lt;port&gt;
--https-address<span class="o">=</span><span class="s2">&#34;&#34;</span>: 为 HTTPS 客户端 监听 &lt;addr&gt;:&lt;port&gt;
--lookupd-tcp-address<span class="o">=</span>: 解析 TCP 地址名字 <span class="o">(</span>可能会给多次<span class="o">)</span>
--max-body-size<span class="o">=</span>5123840: 单个命令体的最大尺寸
--max-bytes-per-file<span class="o">=</span>104857600: 每个磁盘队列文件的字节数
--max-deflate-level<span class="o">=</span>6: 最大的压缩比率等级（&gt; <span class="nv">values</span> <span class="o">==</span> &gt; nsqd CPU usage<span class="o">)</span>
--max-heartbeat-interval<span class="o">=</span>1m0s: 在客户端心跳间，最大的客户端配置时间间隔
--max-message-size<span class="o">=</span>1024768: <span class="o">(</span>弃用 --max-msg-size<span class="o">)</span> 单个消息体的最大字节数
--max-msg-size<span class="o">=</span>1024768: 单个消息体的最大字节数
--max-msg-timeout<span class="o">=</span>15m0s: 消息超时的最大时间间隔
--max-output-buffer-size<span class="o">=</span>65536: 最大客户端输出缓存可配置大小<span class="o">(</span>字节）
--max-output-buffer-timeout<span class="o">=</span>1s: 在 flushing 到客户端前，最长的配置时间间隔。
--max-rdy-count<span class="o">=</span>2500: 客户端最大的 RDY 数量
--max-req-timeout<span class="o">=</span>1h0m0s: 消息重新排队的超时时间
--mem-queue-size<span class="o">=</span>10000: 内存里的消息数<span class="o">(</span>per topic/channel<span class="o">)</span>
--msg-timeout<span class="o">=</span><span class="s2">&#34;60s&#34;</span>: 自动重新队列消息前需要等待的时间
--snappy<span class="o">=</span>true: 打开快速选项 <span class="o">(</span>客户端压缩<span class="o">)</span>
--statsd-address<span class="o">=</span><span class="s2">&#34;&#34;</span>: 统计进程的 UDP &lt;addr&gt;:&lt;port&gt;
--statsd-interval<span class="o">=</span><span class="s2">&#34;60s&#34;</span>: 从推送到统计的时间间隔
--statsd-mem-stats<span class="o">=</span>true: 切换发送内存和 GC 统计数据
--statsd-prefix<span class="o">=</span><span class="s2">&#34;nsq.%s&#34;</span>: 发送给统计keys 的前缀<span class="o">(</span>%s <span class="k">for</span> host replacement<span class="o">)</span>
--sync-every<span class="o">=</span>2500: 磁盘队列 fsync 的消息数
--sync-timeout<span class="o">=</span>2s: 每个磁盘队列 fsync 平均耗时
--tcp-address<span class="o">=</span><span class="s2">&#34;0.0.0.0:4150&#34;</span>: TCP 客户端 监听的 &lt;addr&gt;:&lt;port&gt;
--tls-cert<span class="o">=</span><span class="s2">&#34;&#34;</span>: 证书文件路径
--tls-client-auth-policy<span class="o">=</span><span class="s2">&#34;&#34;</span>: 客户端证书授权策略 <span class="o">(</span><span class="s1">&#39;require&#39;</span> or <span class="s1">&#39;require-verify&#39;</span><span class="o">)</span>
--tls-key<span class="o">=</span><span class="s2">&#34;&#34;</span>: 私钥路径文件
--tls-required<span class="o">=</span>false: 客户端连接需求 TLS
--tls-root-ca-file<span class="o">=</span><span class="s2">&#34;&#34;</span>: 私钥证书授权 PEM 路径
--verbose<span class="o">=</span>false: 打开日志
--version<span class="o">=</span>false: 打印版本
--worker-id<span class="o">=</span>0: 进程的唯一码<span class="o">(</span>默认是主机名的哈希值<span class="o">)</span>
-</code></pre></div>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">-auth-http-address<span class="o">=</span>: &lt;addr&gt;:&lt;port&gt; 查询授权服务器 <span class="o">(</span>可能会给多次<span class="o">)</span>
+</span></span><span class="line"><span class="cl">-broadcast-address<span class="o">=</span><span class="s2">&#34;&#34;</span>: 通过 lookupd  注册的地址（默认名是 OS）
+</span></span><span class="line"><span class="cl">-config<span class="o">=</span><span class="s2">&#34;&#34;</span>: 配置文件路径
+</span></span><span class="line"><span class="cl">-data-path<span class="o">=</span><span class="s2">&#34;&#34;</span>: 缓存消息的磁盘路径
+</span></span><span class="line"><span class="cl">-deflate<span class="o">=</span>true: 运行协商压缩特性（客户端压缩）
+</span></span><span class="line"><span class="cl">-e2e-processing-latency-percentile<span class="o">=</span>: 消息处理时间的百分比（通过逗号可以多次指定，默认为 none）
+</span></span><span class="line"><span class="cl">-e2e-processing-latency-window-time<span class="o">=</span>10m0s: 计算这段时间里，点对点时间延迟（例如，60s 仅计算过去 <span class="m">60</span> 秒）
+</span></span><span class="line"><span class="cl">-http-address<span class="o">=</span><span class="s2">&#34;0.0.0.0:4151&#34;</span>: 为 HTTP 客户端监听 &lt;addr&gt;:&lt;port&gt;
+</span></span><span class="line"><span class="cl">-https-address<span class="o">=</span><span class="s2">&#34;&#34;</span>: 为 HTTPS 客户端 监听 &lt;addr&gt;:&lt;port&gt;
+</span></span><span class="line"><span class="cl">-lookupd-tcp-address<span class="o">=</span>: 解析 TCP 地址名字 <span class="o">(</span>可能会给多次<span class="o">)</span>
+</span></span><span class="line"><span class="cl">-max-body-size<span class="o">=</span>5123840: 单个命令体的最大尺寸
+</span></span><span class="line"><span class="cl">-max-bytes-per-file<span class="o">=</span>104857600: 每个磁盘队列文件的字节数
+</span></span><span class="line"><span class="cl">-max-deflate-level<span class="o">=</span>6: 最大的压缩比率等级（&gt; <span class="nv">values</span> <span class="o">==</span> &gt; nsqd CPU usage<span class="o">)</span>
+</span></span><span class="line"><span class="cl">-max-heartbeat-interval<span class="o">=</span>1m0s: 在客户端心跳间，最大的客户端配置时间间隔
+</span></span><span class="line"><span class="cl">-max-message-size<span class="o">=</span>1024768: <span class="o">(</span>弃用 --max-msg-size<span class="o">)</span> 单个消息体的最大字节数
+</span></span><span class="line"><span class="cl">-max-msg-size<span class="o">=</span>1024768: 单个消息体的最大字节数
+</span></span><span class="line"><span class="cl">-max-msg-timeout<span class="o">=</span>15m0s: 消息超时的最大时间间隔
+</span></span><span class="line"><span class="cl">-max-output-buffer-size<span class="o">=</span>65536: 最大客户端输出缓存可配置大小<span class="o">(</span>字节）
+</span></span><span class="line"><span class="cl">-max-output-buffer-timeout<span class="o">=</span>1s: 在 flushing 到客户端前，最长的配置时间间隔。
+</span></span><span class="line"><span class="cl">-max-rdy-count<span class="o">=</span>2500: 客户端最大的 RDY 数量
+</span></span><span class="line"><span class="cl">-max-req-timeout<span class="o">=</span>1h0m0s: 消息重新排队的超时时间
+</span></span><span class="line"><span class="cl">-mem-queue-size<span class="o">=</span>10000: 内存里的消息数<span class="o">(</span>per topic/channel<span class="o">)</span>
+</span></span><span class="line"><span class="cl">-msg-timeout<span class="o">=</span><span class="s2">&#34;60s&#34;</span>: 自动重新队列消息前需要等待的时间
+</span></span><span class="line"><span class="cl">-snappy<span class="o">=</span>true: 打开快速选项 <span class="o">(</span>客户端压缩<span class="o">)</span>
+</span></span><span class="line"><span class="cl">-statsd-address<span class="o">=</span><span class="s2">&#34;&#34;</span>: 统计进程的 UDP &lt;addr&gt;:&lt;port&gt;
+</span></span><span class="line"><span class="cl">-statsd-interval<span class="o">=</span><span class="s2">&#34;60s&#34;</span>: 从推送到统计的时间间隔
+</span></span><span class="line"><span class="cl">-statsd-mem-stats<span class="o">=</span>true: 切换发送内存和 GC 统计数据
+</span></span><span class="line"><span class="cl">-statsd-prefix<span class="o">=</span><span class="s2">&#34;nsq.%s&#34;</span>: 发送给统计keys 的前缀<span class="o">(</span>%s <span class="k">for</span> host replacement<span class="o">)</span>
+</span></span><span class="line"><span class="cl">-sync-every<span class="o">=</span>2500: 磁盘队列 fsync 的消息数
+</span></span><span class="line"><span class="cl">-sync-timeout<span class="o">=</span>2s: 每个磁盘队列 fsync 平均耗时
+</span></span><span class="line"><span class="cl">-tcp-address<span class="o">=</span><span class="s2">&#34;0.0.0.0:4150&#34;</span>: TCP 客户端 监听的 &lt;addr&gt;:&lt;port&gt;
+</span></span><span class="line"><span class="cl">-tls-cert<span class="o">=</span><span class="s2">&#34;&#34;</span>: 证书文件路径
+</span></span><span class="line"><span class="cl">-tls-client-auth-policy<span class="o">=</span><span class="s2">&#34;&#34;</span>: 客户端证书授权策略 <span class="o">(</span><span class="s1">&#39;require&#39;</span> or <span class="s1">&#39;require-verify&#39;</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">-tls-key<span class="o">=</span><span class="s2">&#34;&#34;</span>: 私钥路径文件
+</span></span><span class="line"><span class="cl">-tls-required<span class="o">=</span>false: 客户端连接需求 TLS
+</span></span><span class="line"><span class="cl">-tls-root-ca-file<span class="o">=</span><span class="s2">&#34;&#34;</span>: 私钥证书授权 PEM 路径
+</span></span><span class="line"><span class="cl">-verbose<span class="o">=</span>false: 打开日志
+</span></span><span class="line"><span class="cl">-version<span class="o">=</span>false: 打印版本
+</span></span><span class="line"><span class="cl">-worker-id<span class="o">=</span>0: 进程的唯一码<span class="o">(</span>默认是主机名的哈希值<span class="o">)</span>
+</span></span></code></pre></div>
           </div>
 
           
@@ -656,7 +656,7 @@ docker run --restart<span class="o">=</span>always -d --restart<span class="o">=
 
   
   <div class="copyright py-4">
-    <span>  2016 - 2022 &copy; | Theme <a href='https://github.com/EliiseS/AllinOne' target="_blank">AllinOne</a> </span>
+    <span>  2016 - 2023 &copy; | Theme <a href='https://github.com/EliiseS/AllinOne' target="_blank">AllinOne</a> </span>
   </div>
   
 

@@ -390,272 +390,271 @@
 
           <div class="post-content markdown">
             <h1 id="1安装es">1、安装Es</h1>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-dockerfile" data-lang="dockerfile">docker run -d --name elasticsearch --net elk -p 9200:9200 -p 9300:9300 -e <span class="s2">&#34;discovery.type=single-node&#34;</span> elasticsearch:7.17.0<span class="err">
-</span></code></pre></div><h1 id="2第三方库">2、第三方库</h1>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-golang" data-lang="golang"><span class="k">go</span> <span class="nx">get</span> <span class="nx">github</span><span class="p">.</span><span class="nx">com</span><span class="o">/</span><span class="nx">olivere</span><span class="o">/</span><span class="nx">elastic</span>
-</code></pre></div><h1 id="3快速开始">3、快速开始</h1>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-golang" data-lang="golang"><span class="kn">package</span> <span class="nx">main</span>
-
-<span class="kn">import</span> <span class="p">(</span>
-	<span class="s">&#34;github.com/olivere/elastic/v7&#34;</span>
-	<span class="s">&#34;log&#34;</span>
-<span class="p">)</span>
-
-<span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
-	<span class="nx">esClient</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">elastic</span><span class="p">.</span><span class="nf">NewClient</span><span class="p">(</span><span class="nx">elastic</span><span class="p">.</span><span class="nf">SetSniff</span><span class="p">(</span><span class="kc">false</span><span class="p">),</span>
-		<span class="c1">// 设置ES服务地址，支持多个地址
-</span><span class="c1"></span>		<span class="nx">elastic</span><span class="p">.</span><span class="nf">SetURL</span><span class="p">(</span><span class="s">&#34;http://127.0.0.1:9200&#34;</span><span class="p">))</span>
-	<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
-		<span class="nx">log</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;es err&#34;</span><span class="p">,</span> <span class="nx">err</span><span class="p">)</span>
-	<span class="p">}</span>
-	<span class="nx">log</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">esClient</span><span class="p">.</span><span class="nf">IsRunning</span><span class="p">())</span>
-<span class="p">}</span>
-
-<span class="c1">//  true
-</span></code></pre></div><h1 id="4手动创建索引">4、手动创建索引</h1>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="kn">package</span> <span class="nx">main</span>
-
-<span class="kn">import</span> <span class="p">(</span>
-	<span class="s">&#34;context&#34;</span>
-	<span class="s">&#34;github.com/olivere/elastic/v7&#34;</span>
-	<span class="s">&#34;log&#34;</span>
-<span class="p">)</span>
-
-<span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
-	<span class="nx">esClient</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">elastic</span><span class="p">.</span><span class="nf">NewClient</span><span class="p">(</span><span class="nx">elastic</span><span class="p">.</span><span class="nf">SetSniff</span><span class="p">(</span><span class="kc">false</span><span class="p">),</span>
-		<span class="c1">// 设置ES服务地址，支持多个地址
-</span><span class="c1"></span>		<span class="nx">elastic</span><span class="p">.</span><span class="nf">SetURL</span><span class="p">(</span><span class="s">&#34;http://127.0.0.1:9200&#34;</span><span class="p">))</span>
-	<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
-		<span class="nx">log</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;es err&#34;</span><span class="p">,</span> <span class="nx">err</span><span class="p">)</span>
-	<span class="p">}</span>
-	<span class="nx">log</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">esClient</span><span class="p">.</span><span class="nf">IsRunning</span><span class="p">())</span>
-	<span class="nx">mapping</span> <span class="o">:=</span> <span class="s">`
-</span><span class="s">	{
-</span><span class="s">	  &#34;settings&#34;: {
-</span><span class="s">		&#34;number_of_shards&#34;: 5,
-</span><span class="s">		&#34;number_of_replicas&#34;: 1
-</span><span class="s">	  },
-</span><span class="s">	  &#34;mappings&#34;: {
-</span><span class="s">		&#34;properties&#34;: {
-</span><span class="s">		  &#34;id&#34;: {
-</span><span class="s">			&#34;type&#34;: &#34;long&#34;
-</span><span class="s">		  },
-</span><span class="s">		  &#34;name&#34;: {
-</span><span class="s">			&#34;type&#34;: &#34;text&#34;
-</span><span class="s">		  },
-</span><span class="s">		  &#34;code&#34;: {
-</span><span class="s">			&#34;type&#34;: &#34;text&#34;
-</span><span class="s">		  }
-</span><span class="s">		}
-</span><span class="s">	  }
-</span><span class="s">	}
-</span><span class="s">		`</span>
-	<span class="nx">res</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">esClient</span><span class="p">.</span><span class="nf">CreateIndex</span><span class="p">(</span><span class="s">&#34;test1&#34;</span><span class="p">).</span><span class="nf">Body</span><span class="p">(</span><span class="nx">mapping</span><span class="p">).</span><span class="nf">Do</span><span class="p">(</span><span class="nx">context</span><span class="p">.</span><span class="nf">Background</span><span class="p">())</span>
-	<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
-		<span class="nx">log</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
-	<span class="p">}</span>
-	<span class="nx">log</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">res</span><span class="p">)</span>
-
-	<span class="nx">indexRes</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">esClient</span><span class="p">.</span><span class="nf">GetMapping</span><span class="p">().</span><span class="nf">Index</span><span class="p">(</span><span class="s">&#34;test1&#34;</span><span class="p">).</span><span class="nf">Do</span><span class="p">(</span><span class="nx">context</span><span class="p">.</span><span class="nf">Background</span><span class="p">())</span>
-	<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
-		<span class="nx">log</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
-	<span class="p">}</span>
-	<span class="nx">log</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">indexRes</span><span class="p">)</span>
-<span class="p">}</span>
-
-</code></pre></div><h1 id="5示例">5、示例</h1>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-dockerfile" data-lang="dockerfile"><span class="line"><span class="cl">docker run -d --name elasticsearch --net elk -p 9200:9200 -p 9300:9300 -e <span class="s2">&#34;discovery.type=single-node&#34;</span> elasticsearch:7.17.0<span class="err">
+</span></span></span></code></pre></div><h1 id="2第三方库">2、第三方库</h1>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-golang" data-lang="golang"><span class="line"><span class="cl"><span class="k">go</span> <span class="nx">get</span> <span class="nx">github</span><span class="p">.</span><span class="nx">com</span><span class="o">/</span><span class="nx">olivere</span><span class="o">/</span><span class="nx">elastic</span>
+</span></span></code></pre></div><h1 id="3快速开始">3、快速开始</h1>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-golang" data-lang="golang"><span class="line"><span class="cl"><span class="kn">package</span> <span class="nx">main</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="p">(</span>
+</span></span><span class="line"><span class="cl">	<span class="s">&#34;github.com/olivere/elastic/v7&#34;</span>
+</span></span><span class="line"><span class="cl">	<span class="s">&#34;log&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">esClient</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">elastic</span><span class="p">.</span><span class="nf">NewClient</span><span class="p">(</span><span class="nx">elastic</span><span class="p">.</span><span class="nf">SetSniff</span><span class="p">(</span><span class="kc">false</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">		<span class="c1">// 设置ES服务地址，支持多个地址
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>		<span class="nx">elastic</span><span class="p">.</span><span class="nf">SetURL</span><span class="p">(</span><span class="s">&#34;http://127.0.0.1:9200&#34;</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">log</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;es err&#34;</span><span class="p">,</span> <span class="nx">err</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">log</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">esClient</span><span class="p">.</span><span class="nf">IsRunning</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">//  true
+</span></span></span></code></pre></div><h1 id="4手动创建索引">4、手动创建索引</h1>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kn">package</span> <span class="nx">main</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="p">(</span>
+</span></span><span class="line"><span class="cl">	<span class="s">&#34;context&#34;</span>
+</span></span><span class="line"><span class="cl">	<span class="s">&#34;github.com/olivere/elastic/v7&#34;</span>
+</span></span><span class="line"><span class="cl">	<span class="s">&#34;log&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">esClient</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">elastic</span><span class="p">.</span><span class="nf">NewClient</span><span class="p">(</span><span class="nx">elastic</span><span class="p">.</span><span class="nf">SetSniff</span><span class="p">(</span><span class="kc">false</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">		<span class="c1">// 设置ES服务地址，支持多个地址
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>		<span class="nx">elastic</span><span class="p">.</span><span class="nf">SetURL</span><span class="p">(</span><span class="s">&#34;http://127.0.0.1:9200&#34;</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">log</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;es err&#34;</span><span class="p">,</span> <span class="nx">err</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">log</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">esClient</span><span class="p">.</span><span class="nf">IsRunning</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">mapping</span> <span class="o">:=</span> <span class="s">`
+</span></span></span><span class="line"><span class="cl"><span class="s">	{
+</span></span></span><span class="line"><span class="cl"><span class="s">	  &#34;settings&#34;: {
+</span></span></span><span class="line"><span class="cl"><span class="s">		&#34;number_of_shards&#34;: 5,
+</span></span></span><span class="line"><span class="cl"><span class="s">		&#34;number_of_replicas&#34;: 1
+</span></span></span><span class="line"><span class="cl"><span class="s">	  },
+</span></span></span><span class="line"><span class="cl"><span class="s">	  &#34;mappings&#34;: {
+</span></span></span><span class="line"><span class="cl"><span class="s">		&#34;properties&#34;: {
+</span></span></span><span class="line"><span class="cl"><span class="s">		  &#34;id&#34;: {
+</span></span></span><span class="line"><span class="cl"><span class="s">			&#34;type&#34;: &#34;long&#34;
+</span></span></span><span class="line"><span class="cl"><span class="s">		  },
+</span></span></span><span class="line"><span class="cl"><span class="s">		  &#34;name&#34;: {
+</span></span></span><span class="line"><span class="cl"><span class="s">			&#34;type&#34;: &#34;text&#34;
+</span></span></span><span class="line"><span class="cl"><span class="s">		  },
+</span></span></span><span class="line"><span class="cl"><span class="s">		  &#34;code&#34;: {
+</span></span></span><span class="line"><span class="cl"><span class="s">			&#34;type&#34;: &#34;text&#34;
+</span></span></span><span class="line"><span class="cl"><span class="s">		  }
+</span></span></span><span class="line"><span class="cl"><span class="s">		}
+</span></span></span><span class="line"><span class="cl"><span class="s">	  }
+</span></span></span><span class="line"><span class="cl"><span class="s">	}
+</span></span></span><span class="line"><span class="cl"><span class="s">		`</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">res</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">esClient</span><span class="p">.</span><span class="nf">CreateIndex</span><span class="p">(</span><span class="s">&#34;test1&#34;</span><span class="p">).</span><span class="nf">Body</span><span class="p">(</span><span class="nx">mapping</span><span class="p">).</span><span class="nf">Do</span><span class="p">(</span><span class="nx">context</span><span class="p">.</span><span class="nf">Background</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">log</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">log</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">res</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="nx">indexRes</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">esClient</span><span class="p">.</span><span class="nf">GetMapping</span><span class="p">().</span><span class="nf">Index</span><span class="p">(</span><span class="s">&#34;test1&#34;</span><span class="p">).</span><span class="nf">Do</span><span class="p">(</span><span class="nx">context</span><span class="p">.</span><span class="nf">Background</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">log</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">log</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">indexRes</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><h1 id="5示例">5、示例</h1>
 <p>业务上一般都会从数据库通过中间件将数据同步到ES中，因为各自业务复杂度不同，我们通常会遇到各自合表的情况，下面以<code>订单</code>表为例，简单演示下</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="c1">// Order 订单
-</span><span class="c1"></span><span class="kd">type</span> <span class="nx">Order</span> <span class="kd">struct</span> <span class="p">{</span>
-	<span class="nx">Id</span>         <span class="kt">int64</span>     <span class="s">`json:&#34;id&#34;`</span>
-	<span class="nx">OrderNo</span>    <span class="kt">string</span>    <span class="s">`json:&#34;orderNo&#34;`</span>
-	<span class="nx">Created</span>    <span class="nx">time</span><span class="p">.</span><span class="nx">Time</span> <span class="s">`json:&#34;created&#34;`</span>
-	<span class="nx">TotalPrice</span> <span class="kt">float64</span>   <span class="s">`json:&#34;totalPrice&#34;`</span> <span class="c1">// 总价格
-</span><span class="c1"></span>	<span class="nx">Payment</span>    <span class="kt">float64</span>   <span class="s">`json:&#34;payment&#34;`</span>    <span class="c1">// 实际价格
-</span><span class="c1"></span><span class="p">}</span>
-
-<span class="c1">// SubOrder 子订单
-</span><span class="c1"></span><span class="kd">type</span> <span class="nx">SubOrder</span> <span class="kd">struct</span> <span class="p">{</span>
-	<span class="nx">Id</span>        <span class="kt">int64</span>   <span class="s">`json:&#34;id&#34;`</span>
-	<span class="nx">OrderNo</span>   <span class="kt">string</span>  <span class="s">`json:&#34;orderNo&#34;`</span>
-	<span class="nx">Name</span>      <span class="kt">string</span>  <span class="s">`json:&#34;name&#34;`</span>
-	<span class="nx">Code</span>      <span class="kt">string</span>  <span class="s">`json:&#34;code&#34;`</span>
-	<span class="nx">Number</span>    <span class="kt">int64</span>   <span class="s">`json:&#34;number&#34;`</span>    <span class="c1">// 数量
-</span><span class="c1"></span>	<span class="nx">UnitPrice</span> <span class="kt">float64</span> <span class="s">`json:&#34;unitPrice&#34;`</span> <span class="c1">// 单价
-</span><span class="c1"></span>	<span class="nx">Cost</span>      <span class="kt">float64</span> <span class="s">`json:&#34;cost&#34;`</span>      <span class="c1">// 成本
-</span><span class="c1"></span>	<span class="nx">Total</span>     <span class="kt">float64</span> <span class="s">`json:&#34;total&#34;`</span>     <span class="c1">// 合计
-</span><span class="c1"></span><span class="p">}</span>
-</code></pre></div><p>订单表和订单子表通过订单号<code>OrderNo</code>进行关联，可能会出现一对多的情况，这种情况下的索引怎么创建呢</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="p">{</span>
-  <span class="s2">&#34;settings&#34;</span><span class="o">:</span> <span class="p">{</span>
-    <span class="s2">&#34;number_of_shards&#34;</span><span class="o">:</span> <span class="mi">5</span><span class="p">,</span>
-    <span class="s2">&#34;number_of_replicas&#34;</span><span class="o">:</span> <span class="mi">1</span>
-  <span class="p">},</span>
-  <span class="s2">&#34;mappings&#34;</span><span class="o">:</span> <span class="p">{</span>
-    <span class="s2">&#34;properties&#34;</span><span class="o">:</span> <span class="p">{</span>
-      <span class="s2">&#34;id&#34;</span><span class="o">:</span> <span class="p">{</span>
-        <span class="s2">&#34;type&#34;</span><span class="o">:</span> <span class="s2">&#34;long&#34;</span>
-      <span class="p">},</span>
-      <span class="s2">&#34;orderNo&#34;</span><span class="o">:</span> <span class="p">{</span>
-        <span class="s2">&#34;type&#34;</span><span class="o">:</span> <span class="s2">&#34;text&#34;</span>
-      <span class="p">},</span>
-      <span class="s2">&#34;created&#34;</span><span class="o">:</span> <span class="p">{</span>
-        <span class="s2">&#34;type&#34;</span><span class="o">:</span> <span class="s2">&#34;date&#34;</span><span class="p">,</span>
-        <span class="s2">&#34;format&#34;</span><span class="o">:</span> <span class="s2">&#34;yyyy-MM-dd HH:mm:ss||strict_date_optional_time||epoch_millis&#34;</span>
-      <span class="p">},</span>
-      <span class="s2">&#34;totalPrice&#34;</span><span class="o">:</span> <span class="p">{</span>
-        <span class="s2">&#34;type&#34;</span><span class="o">:</span> <span class="s2">&#34;double&#34;</span>
-      <span class="p">},</span>
-      <span class="s2">&#34;payment&#34;</span><span class="o">:</span> <span class="p">{</span>
-        <span class="s2">&#34;type&#34;</span><span class="o">:</span> <span class="s2">&#34;double&#34;</span>
-      <span class="p">},</span>
-      <span class="s2">&#34;sub_order&#34;</span><span class="o">:</span> <span class="p">{</span>
-        <span class="s2">&#34;type&#34;</span><span class="o">:</span> <span class="s2">&#34;nested&#34;</span><span class="p">,</span>
-        <span class="s2">&#34;properties&#34;</span><span class="o">:</span> <span class="p">{</span>
-          <span class="s2">&#34;sub_order_id&#34;</span><span class="o">:</span> <span class="p">{</span>
-            <span class="s2">&#34;type&#34;</span><span class="o">:</span> <span class="s2">&#34;long&#34;</span>
-          <span class="p">},</span>
-          <span class="s2">&#34;sub_order_orderNo&#34;</span><span class="o">:</span> <span class="p">{</span>
-            <span class="s2">&#34;type&#34;</span><span class="o">:</span> <span class="s2">&#34;text&#34;</span>
-          <span class="p">},</span>
-          <span class="s2">&#34;sub_order_name&#34;</span><span class="o">:</span> <span class="p">{</span>
-            <span class="s2">&#34;type&#34;</span><span class="o">:</span> <span class="s2">&#34;text&#34;</span>
-          <span class="p">},</span>
-          <span class="s2">&#34;sub_order_number&#34;</span><span class="o">:</span> <span class="p">{</span>
-            <span class="s2">&#34;type&#34;</span><span class="o">:</span> <span class="s2">&#34;long&#34;</span>
-          <span class="p">},</span>
-          <span class="s2">&#34;sub_order_unitPrice&#34;</span><span class="o">:</span> <span class="p">{</span>
-            <span class="s2">&#34;type&#34;</span><span class="o">:</span> <span class="s2">&#34;double&#34;</span>
-          <span class="p">},</span>
-          <span class="s2">&#34;sub_order_cost&#34;</span><span class="o">:</span> <span class="p">{</span>
-            <span class="s2">&#34;type&#34;</span><span class="o">:</span> <span class="s2">&#34;double&#34;</span>
-          <span class="p">},</span>
-          <span class="s2">&#34;sub_order_total&#34;</span><span class="o">:</span> <span class="p">{</span>
-            <span class="s2">&#34;type&#34;</span><span class="o">:</span> <span class="s2">&#34;double&#34;</span>
-          <span class="p">}</span>
-        <span class="p">}</span>
-      <span class="p">}</span>
-    <span class="p">}</span>
-  <span class="p">}</span>
-<span class="p">}</span>
-</code></pre></div><p>完整示例代码如下：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="kn">package</span> <span class="nx">main</span>
-
-<span class="kn">import</span> <span class="p">(</span>
-	<span class="s">&#34;context&#34;</span>
-	<span class="s">&#34;github.com/olivere/elastic/v7&#34;</span>
-	<span class="s">&#34;log&#34;</span>
-	<span class="s">&#34;time&#34;</span>
-<span class="p">)</span>
-
-<span class="kd">var</span> <span class="nx">Es</span> <span class="o">*</span><span class="nx">elastic</span><span class="p">.</span><span class="nx">Client</span>
-
-<span class="c1">// Order 订单
-</span><span class="c1"></span><span class="kd">type</span> <span class="nx">Order</span> <span class="kd">struct</span> <span class="p">{</span>
-	<span class="nx">Id</span>         <span class="kt">int64</span>     <span class="s">`json:&#34;id&#34;`</span>
-	<span class="nx">OrderNo</span>    <span class="kt">string</span>    <span class="s">`json:&#34;orderNo&#34;`</span>
-	<span class="nx">Created</span>    <span class="nx">time</span><span class="p">.</span><span class="nx">Time</span> <span class="s">`json:&#34;created&#34;`</span>
-	<span class="nx">TotalPrice</span> <span class="kt">float64</span>   <span class="s">`json:&#34;totalPrice&#34;`</span> <span class="c1">// 总价格
-</span><span class="c1"></span>	<span class="nx">Payment</span>    <span class="kt">float64</span>   <span class="s">`json:&#34;payment&#34;`</span>    <span class="c1">// 实际价格
-</span><span class="c1"></span><span class="p">}</span>
-
-<span class="c1">// SubOrder 子订单
-</span><span class="c1"></span><span class="kd">type</span> <span class="nx">SubOrder</span> <span class="kd">struct</span> <span class="p">{</span>
-	<span class="nx">Id</span>        <span class="kt">int64</span>   <span class="s">`json:&#34;id&#34;`</span>
-	<span class="nx">OrderNo</span>   <span class="kt">string</span>  <span class="s">`json:&#34;orderNo&#34;`</span>
-	<span class="nx">Name</span>      <span class="kt">string</span>  <span class="s">`json:&#34;name&#34;`</span>
-	<span class="nx">Number</span>    <span class="kt">int64</span>   <span class="s">`json:&#34;number&#34;`</span>    <span class="c1">// 数量
-</span><span class="c1"></span>	<span class="nx">UnitPrice</span> <span class="kt">float64</span> <span class="s">`json:&#34;unitPrice&#34;`</span> <span class="c1">// 单价
-</span><span class="c1"></span>	<span class="nx">Cost</span>      <span class="kt">float64</span> <span class="s">`json:&#34;cost&#34;`</span>      <span class="c1">// 成本
-</span><span class="c1"></span>	<span class="nx">Total</span>     <span class="kt">float64</span> <span class="s">`json:&#34;total&#34;`</span>     <span class="c1">// 合计
-</span><span class="c1"></span><span class="p">}</span>
-
-<span class="kd">func</span> <span class="nf">init</span><span class="p">()</span> <span class="p">{</span>
-	<span class="kd">var</span> <span class="nx">err</span> <span class="kt">error</span>
-	<span class="nx">Es</span><span class="p">,</span> <span class="nx">err</span> <span class="p">=</span> <span class="nx">elastic</span><span class="p">.</span><span class="nf">NewClient</span><span class="p">(</span><span class="nx">elastic</span><span class="p">.</span><span class="nf">SetSniff</span><span class="p">(</span><span class="kc">false</span><span class="p">),</span>
-		<span class="c1">// 设置ES服务地址，支持多个地址
-</span><span class="c1"></span>		<span class="nx">elastic</span><span class="p">.</span><span class="nf">SetURL</span><span class="p">(</span><span class="s">&#34;http://127.0.0.1:9200&#34;</span><span class="p">))</span>
-	<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
-		<span class="nx">log</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;es err&#34;</span><span class="p">,</span> <span class="nx">err</span><span class="p">)</span>
-	<span class="p">}</span>
-	<span class="nx">log</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">Es</span><span class="p">.</span><span class="nf">IsRunning</span><span class="p">())</span>
-<span class="p">}</span>
-
-<span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
-	<span class="c1">// 创建索引
-</span><span class="c1"></span>	<span class="nf">CreateIndex</span><span class="p">()</span>
-<span class="p">}</span>
-
-<span class="kd">func</span> <span class="nf">CreateIndex</span><span class="p">()</span> <span class="p">{</span>
-	<span class="nx">mapping</span> <span class="o">:=</span> <span class="s">`
-</span><span class="s">			{
-</span><span class="s">  &#34;settings&#34;: {
-</span><span class="s">    &#34;number_of_shards&#34;: 5,
-</span><span class="s">    &#34;number_of_replicas&#34;: 1
-</span><span class="s">  },
-</span><span class="s">  &#34;mappings&#34;: {
-</span><span class="s">    &#34;properties&#34;: {
-</span><span class="s">      &#34;id&#34;: {
-</span><span class="s">        &#34;type&#34;: &#34;long&#34;
-</span><span class="s">      },
-</span><span class="s">      &#34;orderNo&#34;: {
-</span><span class="s">        &#34;type&#34;: &#34;text&#34;
-</span><span class="s">      },
-</span><span class="s">      &#34;created&#34;: {
-</span><span class="s">        &#34;type&#34;: &#34;date&#34;,
-</span><span class="s">        &#34;format&#34;: &#34;yyyy-MM-dd HH:mm:ss||strict_date_optional_time||epoch_millis&#34;
-</span><span class="s">      },
-</span><span class="s">      &#34;totalPrice&#34;: {
-</span><span class="s">        &#34;type&#34;: &#34;double&#34;
-</span><span class="s">      },
-</span><span class="s">      &#34;payment&#34;: {
-</span><span class="s">        &#34;type&#34;: &#34;double&#34;
-</span><span class="s">      },
-</span><span class="s">      &#34;sub_order&#34;: {
-</span><span class="s">        &#34;type&#34;: &#34;nested&#34;,
-</span><span class="s">        &#34;properties&#34;: {
-</span><span class="s">          &#34;sub_order_id&#34;: {
-</span><span class="s">            &#34;type&#34;: &#34;long&#34;
-</span><span class="s">          },
-</span><span class="s">          &#34;sub_order_orderNo&#34;: {
-</span><span class="s">            &#34;type&#34;: &#34;text&#34;
-</span><span class="s">          },
-</span><span class="s">          &#34;sub_order_name&#34;: {
-</span><span class="s">            &#34;type&#34;: &#34;text&#34;
-</span><span class="s">          },
-</span><span class="s">          &#34;sub_order_number&#34;: {
-</span><span class="s">            &#34;type&#34;: &#34;long&#34;
-</span><span class="s">          },
-</span><span class="s">          &#34;sub_order_unitPrice&#34;: {
-</span><span class="s">            &#34;type&#34;: &#34;double&#34;
-</span><span class="s">          },
-</span><span class="s">          &#34;sub_order_cost&#34;: {
-</span><span class="s">            &#34;type&#34;: &#34;double&#34;
-</span><span class="s">          },
-</span><span class="s">          &#34;sub_order_total&#34;: {
-</span><span class="s">            &#34;type&#34;: &#34;double&#34;
-</span><span class="s">          }
-</span><span class="s">        }
-</span><span class="s">      }
-</span><span class="s">    }
-</span><span class="s">  }
-</span><span class="s">}
-</span><span class="s">
-</span><span class="s">		`</span>
-
-	<span class="nx">res</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">Es</span><span class="p">.</span><span class="nf">CreateIndex</span><span class="p">(</span><span class="s">&#34;order&#34;</span><span class="p">).</span><span class="nf">BodyString</span><span class="p">(</span><span class="nx">mapping</span><span class="p">).</span><span class="nf">Do</span><span class="p">(</span><span class="nx">context</span><span class="p">.</span><span class="nf">Background</span><span class="p">())</span>
-	<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
-		<span class="nx">log</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
-	<span class="p">}</span>
-	<span class="nx">log</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">res</span><span class="p">)</span>
-
-	<span class="nx">indexRes</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">Es</span><span class="p">.</span><span class="nf">GetMapping</span><span class="p">().</span><span class="nf">Index</span><span class="p">(</span><span class="s">&#34;order&#34;</span><span class="p">).</span><span class="nf">Do</span><span class="p">(</span><span class="nx">context</span><span class="p">.</span><span class="nf">Background</span><span class="p">())</span>
-	<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
-		<span class="nx">log</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
-	<span class="p">}</span>
-	<span class="nx">log</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">indexRes</span><span class="p">)</span>
-<span class="p">}</span>
-</code></pre></div>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="c1">// Order 订单
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kd">type</span> <span class="nx">Order</span> <span class="kd">struct</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">Id</span>         <span class="kt">int64</span>     <span class="s">`json:&#34;id&#34;`</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">OrderNo</span>    <span class="kt">string</span>    <span class="s">`json:&#34;orderNo&#34;`</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">Created</span>    <span class="nx">time</span><span class="p">.</span><span class="nx">Time</span> <span class="s">`json:&#34;created&#34;`</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">TotalPrice</span> <span class="kt">float64</span>   <span class="s">`json:&#34;totalPrice&#34;`</span> <span class="c1">// 总价格
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">Payment</span>    <span class="kt">float64</span>   <span class="s">`json:&#34;payment&#34;`</span>    <span class="c1">// 实际价格
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// SubOrder 子订单
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kd">type</span> <span class="nx">SubOrder</span> <span class="kd">struct</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">Id</span>        <span class="kt">int64</span>   <span class="s">`json:&#34;id&#34;`</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">OrderNo</span>   <span class="kt">string</span>  <span class="s">`json:&#34;orderNo&#34;`</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">Name</span>      <span class="kt">string</span>  <span class="s">`json:&#34;name&#34;`</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">Code</span>      <span class="kt">string</span>  <span class="s">`json:&#34;code&#34;`</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">Number</span>    <span class="kt">int64</span>   <span class="s">`json:&#34;number&#34;`</span>    <span class="c1">// 数量
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">UnitPrice</span> <span class="kt">float64</span> <span class="s">`json:&#34;unitPrice&#34;`</span> <span class="c1">// 单价
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">Cost</span>      <span class="kt">float64</span> <span class="s">`json:&#34;cost&#34;`</span>      <span class="c1">// 成本
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">Total</span>     <span class="kt">float64</span> <span class="s">`json:&#34;total&#34;`</span>     <span class="c1">// 合计
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span>
+</span></span></code></pre></div><p>订单表和订单子表通过订单号<code>OrderNo</code>进行关联，可能会出现一对多的情况，这种情况下的索引怎么创建呢</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;settings&#34;</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;number_of_shards&#34;</span><span class="o">:</span> <span class="mi">5</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;number_of_replicas&#34;</span><span class="o">:</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="cl">  <span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;mappings&#34;</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;properties&#34;</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="s2">&#34;id&#34;</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="s2">&#34;type&#34;</span><span class="o">:</span> <span class="s2">&#34;long&#34;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">},</span>
+</span></span><span class="line"><span class="cl">      <span class="s2">&#34;orderNo&#34;</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="s2">&#34;type&#34;</span><span class="o">:</span> <span class="s2">&#34;text&#34;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">},</span>
+</span></span><span class="line"><span class="cl">      <span class="s2">&#34;created&#34;</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="s2">&#34;type&#34;</span><span class="o">:</span> <span class="s2">&#34;date&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="s2">&#34;format&#34;</span><span class="o">:</span> <span class="s2">&#34;yyyy-MM-dd HH:mm:ss||strict_date_optional_time||epoch_millis&#34;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">},</span>
+</span></span><span class="line"><span class="cl">      <span class="s2">&#34;totalPrice&#34;</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="s2">&#34;type&#34;</span><span class="o">:</span> <span class="s2">&#34;double&#34;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">},</span>
+</span></span><span class="line"><span class="cl">      <span class="s2">&#34;payment&#34;</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="s2">&#34;type&#34;</span><span class="o">:</span> <span class="s2">&#34;double&#34;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">},</span>
+</span></span><span class="line"><span class="cl">      <span class="s2">&#34;sub_order&#34;</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="s2">&#34;type&#34;</span><span class="o">:</span> <span class="s2">&#34;nested&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="s2">&#34;properties&#34;</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">          <span class="s2">&#34;sub_order_id&#34;</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="s2">&#34;type&#34;</span><span class="o">:</span> <span class="s2">&#34;long&#34;</span>
+</span></span><span class="line"><span class="cl">          <span class="p">},</span>
+</span></span><span class="line"><span class="cl">          <span class="s2">&#34;sub_order_orderNo&#34;</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="s2">&#34;type&#34;</span><span class="o">:</span> <span class="s2">&#34;text&#34;</span>
+</span></span><span class="line"><span class="cl">          <span class="p">},</span>
+</span></span><span class="line"><span class="cl">          <span class="s2">&#34;sub_order_name&#34;</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="s2">&#34;type&#34;</span><span class="o">:</span> <span class="s2">&#34;text&#34;</span>
+</span></span><span class="line"><span class="cl">          <span class="p">},</span>
+</span></span><span class="line"><span class="cl">          <span class="s2">&#34;sub_order_number&#34;</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="s2">&#34;type&#34;</span><span class="o">:</span> <span class="s2">&#34;long&#34;</span>
+</span></span><span class="line"><span class="cl">          <span class="p">},</span>
+</span></span><span class="line"><span class="cl">          <span class="s2">&#34;sub_order_unitPrice&#34;</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="s2">&#34;type&#34;</span><span class="o">:</span> <span class="s2">&#34;double&#34;</span>
+</span></span><span class="line"><span class="cl">          <span class="p">},</span>
+</span></span><span class="line"><span class="cl">          <span class="s2">&#34;sub_order_cost&#34;</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="s2">&#34;type&#34;</span><span class="o">:</span> <span class="s2">&#34;double&#34;</span>
+</span></span><span class="line"><span class="cl">          <span class="p">},</span>
+</span></span><span class="line"><span class="cl">          <span class="s2">&#34;sub_order_total&#34;</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="s2">&#34;type&#34;</span><span class="o">:</span> <span class="s2">&#34;double&#34;</span>
+</span></span><span class="line"><span class="cl">          <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">      <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>完整示例代码如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kn">package</span> <span class="nx">main</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="p">(</span>
+</span></span><span class="line"><span class="cl">	<span class="s">&#34;context&#34;</span>
+</span></span><span class="line"><span class="cl">	<span class="s">&#34;github.com/olivere/elastic/v7&#34;</span>
+</span></span><span class="line"><span class="cl">	<span class="s">&#34;log&#34;</span>
+</span></span><span class="line"><span class="cl">	<span class="s">&#34;time&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">var</span> <span class="nx">Es</span> <span class="o">*</span><span class="nx">elastic</span><span class="p">.</span><span class="nx">Client</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// Order 订单
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kd">type</span> <span class="nx">Order</span> <span class="kd">struct</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">Id</span>         <span class="kt">int64</span>     <span class="s">`json:&#34;id&#34;`</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">OrderNo</span>    <span class="kt">string</span>    <span class="s">`json:&#34;orderNo&#34;`</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">Created</span>    <span class="nx">time</span><span class="p">.</span><span class="nx">Time</span> <span class="s">`json:&#34;created&#34;`</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">TotalPrice</span> <span class="kt">float64</span>   <span class="s">`json:&#34;totalPrice&#34;`</span> <span class="c1">// 总价格
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">Payment</span>    <span class="kt">float64</span>   <span class="s">`json:&#34;payment&#34;`</span>    <span class="c1">// 实际价格
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// SubOrder 子订单
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kd">type</span> <span class="nx">SubOrder</span> <span class="kd">struct</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">Id</span>        <span class="kt">int64</span>   <span class="s">`json:&#34;id&#34;`</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">OrderNo</span>   <span class="kt">string</span>  <span class="s">`json:&#34;orderNo&#34;`</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">Name</span>      <span class="kt">string</span>  <span class="s">`json:&#34;name&#34;`</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">Number</span>    <span class="kt">int64</span>   <span class="s">`json:&#34;number&#34;`</span>    <span class="c1">// 数量
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">UnitPrice</span> <span class="kt">float64</span> <span class="s">`json:&#34;unitPrice&#34;`</span> <span class="c1">// 单价
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">Cost</span>      <span class="kt">float64</span> <span class="s">`json:&#34;cost&#34;`</span>      <span class="c1">// 成本
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">Total</span>     <span class="kt">float64</span> <span class="s">`json:&#34;total&#34;`</span>     <span class="c1">// 合计
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">init</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="kd">var</span> <span class="nx">err</span> <span class="kt">error</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">Es</span><span class="p">,</span> <span class="nx">err</span> <span class="p">=</span> <span class="nx">elastic</span><span class="p">.</span><span class="nf">NewClient</span><span class="p">(</span><span class="nx">elastic</span><span class="p">.</span><span class="nf">SetSniff</span><span class="p">(</span><span class="kc">false</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">		<span class="c1">// 设置ES服务地址，支持多个地址
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>		<span class="nx">elastic</span><span class="p">.</span><span class="nf">SetURL</span><span class="p">(</span><span class="s">&#34;http://127.0.0.1:9200&#34;</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">log</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;es err&#34;</span><span class="p">,</span> <span class="nx">err</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">log</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">Es</span><span class="p">.</span><span class="nf">IsRunning</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">// 创建索引
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nf">CreateIndex</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">CreateIndex</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">mapping</span> <span class="o">:=</span> <span class="s">`
+</span></span></span><span class="line"><span class="cl"><span class="s">			{
+</span></span></span><span class="line"><span class="cl"><span class="s">  &#34;settings&#34;: {
+</span></span></span><span class="line"><span class="cl"><span class="s">    &#34;number_of_shards&#34;: 5,
+</span></span></span><span class="line"><span class="cl"><span class="s">    &#34;number_of_replicas&#34;: 1
+</span></span></span><span class="line"><span class="cl"><span class="s">  },
+</span></span></span><span class="line"><span class="cl"><span class="s">  &#34;mappings&#34;: {
+</span></span></span><span class="line"><span class="cl"><span class="s">    &#34;properties&#34;: {
+</span></span></span><span class="line"><span class="cl"><span class="s">      &#34;id&#34;: {
+</span></span></span><span class="line"><span class="cl"><span class="s">        &#34;type&#34;: &#34;long&#34;
+</span></span></span><span class="line"><span class="cl"><span class="s">      },
+</span></span></span><span class="line"><span class="cl"><span class="s">      &#34;orderNo&#34;: {
+</span></span></span><span class="line"><span class="cl"><span class="s">        &#34;type&#34;: &#34;text&#34;
+</span></span></span><span class="line"><span class="cl"><span class="s">      },
+</span></span></span><span class="line"><span class="cl"><span class="s">      &#34;created&#34;: {
+</span></span></span><span class="line"><span class="cl"><span class="s">        &#34;type&#34;: &#34;date&#34;,
+</span></span></span><span class="line"><span class="cl"><span class="s">        &#34;format&#34;: &#34;yyyy-MM-dd HH:mm:ss||strict_date_optional_time||epoch_millis&#34;
+</span></span></span><span class="line"><span class="cl"><span class="s">      },
+</span></span></span><span class="line"><span class="cl"><span class="s">      &#34;totalPrice&#34;: {
+</span></span></span><span class="line"><span class="cl"><span class="s">        &#34;type&#34;: &#34;double&#34;
+</span></span></span><span class="line"><span class="cl"><span class="s">      },
+</span></span></span><span class="line"><span class="cl"><span class="s">      &#34;payment&#34;: {
+</span></span></span><span class="line"><span class="cl"><span class="s">        &#34;type&#34;: &#34;double&#34;
+</span></span></span><span class="line"><span class="cl"><span class="s">      },
+</span></span></span><span class="line"><span class="cl"><span class="s">      &#34;sub_order&#34;: {
+</span></span></span><span class="line"><span class="cl"><span class="s">        &#34;type&#34;: &#34;nested&#34;,
+</span></span></span><span class="line"><span class="cl"><span class="s">        &#34;properties&#34;: {
+</span></span></span><span class="line"><span class="cl"><span class="s">          &#34;sub_order_id&#34;: {
+</span></span></span><span class="line"><span class="cl"><span class="s">            &#34;type&#34;: &#34;long&#34;
+</span></span></span><span class="line"><span class="cl"><span class="s">          },
+</span></span></span><span class="line"><span class="cl"><span class="s">          &#34;sub_order_orderNo&#34;: {
+</span></span></span><span class="line"><span class="cl"><span class="s">            &#34;type&#34;: &#34;text&#34;
+</span></span></span><span class="line"><span class="cl"><span class="s">          },
+</span></span></span><span class="line"><span class="cl"><span class="s">          &#34;sub_order_name&#34;: {
+</span></span></span><span class="line"><span class="cl"><span class="s">            &#34;type&#34;: &#34;text&#34;
+</span></span></span><span class="line"><span class="cl"><span class="s">          },
+</span></span></span><span class="line"><span class="cl"><span class="s">          &#34;sub_order_number&#34;: {
+</span></span></span><span class="line"><span class="cl"><span class="s">            &#34;type&#34;: &#34;long&#34;
+</span></span></span><span class="line"><span class="cl"><span class="s">          },
+</span></span></span><span class="line"><span class="cl"><span class="s">          &#34;sub_order_unitPrice&#34;: {
+</span></span></span><span class="line"><span class="cl"><span class="s">            &#34;type&#34;: &#34;double&#34;
+</span></span></span><span class="line"><span class="cl"><span class="s">          },
+</span></span></span><span class="line"><span class="cl"><span class="s">          &#34;sub_order_cost&#34;: {
+</span></span></span><span class="line"><span class="cl"><span class="s">            &#34;type&#34;: &#34;double&#34;
+</span></span></span><span class="line"><span class="cl"><span class="s">          },
+</span></span></span><span class="line"><span class="cl"><span class="s">          &#34;sub_order_total&#34;: {
+</span></span></span><span class="line"><span class="cl"><span class="s">            &#34;type&#34;: &#34;double&#34;
+</span></span></span><span class="line"><span class="cl"><span class="s">          }
+</span></span></span><span class="line"><span class="cl"><span class="s">        }
+</span></span></span><span class="line"><span class="cl"><span class="s">      }
+</span></span></span><span class="line"><span class="cl"><span class="s">    }
+</span></span></span><span class="line"><span class="cl"><span class="s">  }
+</span></span></span><span class="line"><span class="cl"><span class="s">}
+</span></span></span><span class="line"><span class="cl"><span class="s">
+</span></span></span><span class="line"><span class="cl"><span class="s">		`</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="nx">res</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">Es</span><span class="p">.</span><span class="nf">CreateIndex</span><span class="p">(</span><span class="s">&#34;order&#34;</span><span class="p">).</span><span class="nf">BodyString</span><span class="p">(</span><span class="nx">mapping</span><span class="p">).</span><span class="nf">Do</span><span class="p">(</span><span class="nx">context</span><span class="p">.</span><span class="nf">Background</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">log</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">log</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">res</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="nx">indexRes</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">Es</span><span class="p">.</span><span class="nf">GetMapping</span><span class="p">().</span><span class="nf">Index</span><span class="p">(</span><span class="s">&#34;order&#34;</span><span class="p">).</span><span class="nf">Do</span><span class="p">(</span><span class="nx">context</span><span class="p">.</span><span class="nf">Background</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">log</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">log</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">indexRes</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div>
           </div>
 
           
@@ -908,7 +907,7 @@
 
   
   <div class="copyright py-4">
-    <span>  2016 - 2022 &copy; | Theme <a href='https://github.com/EliiseS/AllinOne' target="_blank">AllinOne</a> </span>
+    <span>  2016 - 2023 &copy; | Theme <a href='https://github.com/EliiseS/AllinOne' target="_blank">AllinOne</a> </span>
   </div>
   
 

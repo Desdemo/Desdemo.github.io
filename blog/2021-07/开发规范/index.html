@@ -395,28 +395,27 @@
 <p>作用： 将数据库的表结构生成结构体</p>
 <p>根据各自平台，编译后直接安装即可</p>
 <p>示例：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"> gf gen dao -t base_table  -l <span class="s2">&#34;mysql:root:123456@(192.168.0.2:3306)/rpcx_dev&#34;</span>
- 
--t 表
--l 数据库链接
-</code></pre></div><h2 id="2数据库模型">2、数据库模型</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"> gf gen dao -t base_table  -l <span class="s2">&#34;mysql:root:123456@(192.168.0.2:3306)/rpcx_dev&#34;</span>
+</span></span><span class="line"><span class="cl"> 
+</span></span><span class="line"><span class="cl">-t 表
+</span></span><span class="line"><span class="cl">-l 数据库链接
+</span></span></code></pre></div><h2 id="2数据库模型">2、数据库模型</h2>
 <p>表明采用小写加下划线的形式</p>
 <p>表字段采用大驼峰命名法</p>
 <h3 id="基础字段">基础字段</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">ex</span><span class="w">
-</span><span class="w"></span><span class="p">(</span><span class="w">
-</span><span class="w">    </span><span class="n">Id</span><span class="w">          </span><span class="nb">INT</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="n">AUTO_INCREMENT</span><span class="w"> </span><span class="k">COMMENT</span><span class="w"> </span><span class="s1">&#39;主键ID&#39;</span><span class="p">,</span><span class="w">
-</span><span class="w">    </span><span class="n">CreatedBy</span><span class="w">   </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">32</span><span class="p">)</span><span class="w">                 </span><span class="k">COMMENT</span><span class="w"> </span><span class="s1">&#39;创建人姓名&#39;</span><span class="p">,</span><span class="w">
-</span><span class="w">    </span><span class="n">CreatedAt</span><span class="w">   </span><span class="n">DATETIME</span><span class="w">                    </span><span class="k">COMMENT</span><span class="w"> </span><span class="s1">&#39;创建时间&#39;</span><span class="p">,</span><span class="w">
-</span><span class="w">    </span><span class="n">UpdatedAt</span><span class="w">   </span><span class="n">DATETIME</span><span class="w">                    </span><span class="k">COMMENT</span><span class="w"> </span><span class="s1">&#39;更新时间&#39;</span><span class="p">,</span><span class="w">
-</span><span class="w">    </span><span class="n">UpdatedBy</span><span class="w">   </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">32</span><span class="p">)</span><span class="w">                 </span><span class="k">COMMENT</span><span class="w"> </span><span class="s1">&#39;更新人姓名&#39;</span><span class="p">,</span><span class="w">
-</span><span class="w">    </span><span class="n">DeletedAt</span><span class="w">   </span><span class="n">DATETIME</span><span class="w">                    </span><span class="k">COMMENT</span><span class="w"> </span><span class="s1">&#39;删除时间&#39;</span><span class="p">,</span><span class="w">
-</span><span class="w">    </span><span class="n">UpdatedById</span><span class="w"> </span><span class="nb">INT</span><span class="w">                         </span><span class="k">COMMENT</span><span class="w"> </span><span class="s1">&#39;更新人ID&#39;</span><span class="p">,</span><span class="w">
-</span><span class="w">    </span><span class="n">CreatedById</span><span class="w"> </span><span class="nb">INT</span><span class="w">                         </span><span class="k">COMMENT</span><span class="w"> </span><span class="s1">&#39;创建人ID&#39;</span><span class="p">,</span><span class="w">
-</span><span class="w">    </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">(</span><span class="n">Id</span><span class="p">)</span><span class="w">
-</span><span class="w"></span><span class="p">)</span><span class="w"> </span><span class="k">COMMENT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;示例&#39;</span><span class="p">;</span><span class="w">
-</span><span class="w">
-</span></code></pre></div><h3 id="1单表单">1、单表单</h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">ex</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">(</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">Id</span><span class="w">          </span><span class="nb">INT</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="n">AUTO_INCREMENT</span><span class="w"> </span><span class="k">COMMENT</span><span class="w"> </span><span class="s1">&#39;主键ID&#39;</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">CreatedBy</span><span class="w">   </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">32</span><span class="p">)</span><span class="w">                 </span><span class="k">COMMENT</span><span class="w"> </span><span class="s1">&#39;创建人姓名&#39;</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">CreatedAt</span><span class="w">   </span><span class="n">DATETIME</span><span class="w">                    </span><span class="k">COMMENT</span><span class="w"> </span><span class="s1">&#39;创建时间&#39;</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">UpdatedAt</span><span class="w">   </span><span class="n">DATETIME</span><span class="w">                    </span><span class="k">COMMENT</span><span class="w"> </span><span class="s1">&#39;更新时间&#39;</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">UpdatedBy</span><span class="w">   </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">32</span><span class="p">)</span><span class="w">                 </span><span class="k">COMMENT</span><span class="w"> </span><span class="s1">&#39;更新人姓名&#39;</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">DeletedAt</span><span class="w">   </span><span class="n">DATETIME</span><span class="w">                    </span><span class="k">COMMENT</span><span class="w"> </span><span class="s1">&#39;删除时间&#39;</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">UpdatedById</span><span class="w"> </span><span class="nb">INT</span><span class="w">                         </span><span class="k">COMMENT</span><span class="w"> </span><span class="s1">&#39;更新人ID&#39;</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">CreatedById</span><span class="w"> </span><span class="nb">INT</span><span class="w">                         </span><span class="k">COMMENT</span><span class="w"> </span><span class="s1">&#39;创建人ID&#39;</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">(</span><span class="n">Id</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">)</span><span class="w"> </span><span class="k">COMMENT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;示例&#39;</span><span class="p">;</span><span class="w">
+</span></span></span></code></pre></div><h3 id="1单表单">1、单表单</h3>
 <p>原则上使用基础字段，可选 <code>Code</code>、<code>Name</code></p>
 <h3 id="2主表从表详情表">2、主表、从表(详情表)</h3>
 <p>除上述字段，从表还要有 <code>masterId</code>或者<code>表名+Id</code>这种设计</p>
@@ -428,55 +427,53 @@
 <p><a href="https://www.cnblogs.com/PingLeMe/p/14881047.html">https://www.cnblogs.com/PingLeMe/p/14881047.html</a></p>
 <p>Uber开源的编码规范 <a href="https://learnku.com/go/wikis/38426">https://learnku.com/go/wikis/38426</a></p>
 <h4 id="test中的api接口测试示例">test中的api接口测试示例</h4>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="c1">### 课题总量统计</span>
-POST http://127.0.0.1:9981/rpcx.demo-0.1
-Content-Type: application/json
-X-RPCX-SerializeType: <span class="m">1</span>
-X-RPCX-ServicePath: Platform
-X-RPCX-ServiceMethod: Get
-
-<span class="o">{</span>
-  <span class="s2">&#34;tenant&#34;</span>: <span class="s2">&#34;CU7zm9WhZm&#34;</span>
-<span class="o">}</span>
-<span class="c1">###</span>
-</code></pre></div><h2 id="4goland代码自动格式化设置">4、GoLand代码自动格式化设置</h2>
-<p><img src="https://desdemo.top/home/desdemo/.config/Typora/typora-user-images/image-20210728104244427.png" alt="image-20210728104244427"></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="c1">### 课题总量统计</span>
+</span></span><span class="line"><span class="cl">POST http://127.0.0.1:9981/rpcx.demo-0.1
+</span></span><span class="line"><span class="cl">Content-Type: application/json
+</span></span><span class="line"><span class="cl">X-RPCX-SerializeType: <span class="m">1</span>
+</span></span><span class="line"><span class="cl">X-RPCX-ServicePath: Platform
+</span></span><span class="line"><span class="cl">X-RPCX-ServiceMethod: Get
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">{</span>
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;tenant&#34;</span>: <span class="s2">&#34;CU7zm9WhZm&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span><span class="line"><span class="cl"><span class="c1">###</span>
+</span></span></code></pre></div><h2 id="4goland代码自动格式化设置">4、GoLand代码自动格式化设置</h2>
 <pre tabindex="0"><code class="language-she" data-lang="she"># 如遇网络状况不好，下载失败，可手动执行以下命令
 go get -t golang.org/x/tools/cmd/goimports
 </code></pre><h2 id="5代码">5、代码</h2>
 <p>rpcx框架中指定必须接受3个参数  参考链接<code>https://doc.rpcx.io/part1/server.html#service</code></p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="c1">// 请求
-</span><span class="c1">// 微服务 handler层
-</span><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">a</span> <span class="o">*</span><span class="nx">A</span><span class="p">)</span><span class="nf">Arsuy</span><span class="p">(</span><span class="nx">ctx</span> <span class="nx">context</span><span class="p">.</span><span class="nx">Context</span><span class="p">,</span> <span class="nx">nullParam</span> <span class="kd">interface</span><span class="p">{},</span> <span class="nx">rsp</span> <span class="o">*</span><span class="nx">comm_def</span><span class="p">.</span><span class="nx">Resp</span><span class="p">)</span> <span class="kt">error</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="kc">nil</span> 
-<span class="p">}</span>
-<span class="c1">// 当没有可用传参时,可以 nullParam 替代， 前端框架已经封装好，无需额外传参
-</span><span class="c1"></span><span class="nx">nullParam</span> <span class="kd">interface</span><span class="p">{}</span>
-<span class="o">---------------------------------------------------------------------------------------------------------</span>
-
-
-<span class="c1">// 返回响应
-</span><span class="c1"></span><span class="kd">type</span> <span class="nx">CommonMsg</span> <span class="kd">struct</span> <span class="p">{</span>
-	<span class="nx">Code</span> <span class="kt">int32</span>  <span class="s">`json:&#34;code,omitempty&#34;`</span> <span class="c1">//  
-</span><span class="c1"></span>	<span class="nx">Msg</span>  <span class="kt">string</span> <span class="s">`json:&#34;msg,omitempty&#34;`</span>
-	<span class="nx">Data</span> <span class="kd">interface</span> <span class="s">`json:&#34;data,omitempty&#34;`</span> <span class="c1">// 返回数据
-</span><span class="c1"></span><span class="p">}</span>
-<span class="c1">// 单实体直接赋值即可
-</span><span class="c1">// 列表带分页 或者 多实体返回 可以用如下方式
-</span><span class="c1"></span>
-<span class="c1">// 分页
-</span><span class="c1"></span><span class="nx">rsp</span><span class="p">.</span><span class="nx">Data</span> <span class="p">=</span> <span class="nx">g</span><span class="p">.</span><span class="nx">Map</span><span class="p">{</span>
-		<span class="s">&#34;list&#34;</span><span class="p">:</span> <span class="nx">list</span><span class="p">,</span>
-		<span class="s">&#34;total&#34;</span><span class="p">:</span> <span class="nx">total</span><span class="p">,</span>
-	<span class="p">}</span>
-<span class="c1">// 其他
-</span><span class="c1"></span><span class="nx">rsp</span><span class="p">.</span><span class="nx">Data</span> <span class="p">=</span> <span class="nx">g</span><span class="p">.</span><span class="nx">Map</span> <span class="p">{</span>
-    	<span class="s">&#34;data1&#34;</span><span class="p">:</span><span class="nx">data1</span><span class="p">,</span>
-    	<span class="s">&#34;data2&#34;</span><span class="p">:</span><span class="nx">data2</span><span class="p">,</span>	
-    	<span class="s">&#34;data3&#34;</span><span class="p">:</span><span class="nx">data3</span><span class="p">,</span>
-	<span class="p">}</span>
-
-</code></pre></div>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="c1">// 请求
+</span></span></span><span class="line"><span class="cl"><span class="c1">// 微服务 handler层
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">a</span> <span class="o">*</span><span class="nx">A</span><span class="p">)</span><span class="nf">Arsuy</span><span class="p">(</span><span class="nx">ctx</span> <span class="nx">context</span><span class="p">.</span><span class="nx">Context</span><span class="p">,</span> <span class="nx">nullParam</span> <span class="kd">interface</span><span class="p">{},</span> <span class="nx">rsp</span> <span class="o">*</span><span class="nx">comm_def</span><span class="p">.</span><span class="nx">Resp</span><span class="p">)</span> <span class="kt">error</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="kc">nil</span> 
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// 当没有可用传参时,可以 nullParam 替代， 前端框架已经封装好，无需额外传参
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nx">nullParam</span> <span class="kd">interface</span><span class="p">{}</span>
+</span></span><span class="line"><span class="cl"><span class="o">---------------------------------------------------------------------------------------------------------</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 返回响应
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kd">type</span> <span class="nx">CommonMsg</span> <span class="kd">struct</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">Code</span> <span class="kt">int32</span>  <span class="s">`json:&#34;code,omitempty&#34;`</span> <span class="c1">//  
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">Msg</span>  <span class="kt">string</span> <span class="s">`json:&#34;msg,omitempty&#34;`</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">Data</span> <span class="kd">interface</span> <span class="s">`json:&#34;data,omitempty&#34;`</span> <span class="c1">// 返回数据
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// 单实体直接赋值即可
+</span></span></span><span class="line"><span class="cl"><span class="c1">// 列表带分页 或者 多实体返回 可以用如下方式
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="c1">// 分页
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nx">rsp</span><span class="p">.</span><span class="nx">Data</span> <span class="p">=</span> <span class="nx">g</span><span class="p">.</span><span class="nx">Map</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="s">&#34;list&#34;</span><span class="p">:</span> <span class="nx">list</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">		<span class="s">&#34;total&#34;</span><span class="p">:</span> <span class="nx">total</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// 其他
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nx">rsp</span><span class="p">.</span><span class="nx">Data</span> <span class="p">=</span> <span class="nx">g</span><span class="p">.</span><span class="nx">Map</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    	<span class="s">&#34;data1&#34;</span><span class="p">:</span><span class="nx">data1</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    	<span class="s">&#34;data2&#34;</span><span class="p">:</span><span class="nx">data2</span><span class="p">,</span>	
+</span></span><span class="line"><span class="cl">    	<span class="s">&#34;data3&#34;</span><span class="p">:</span><span class="nx">data3</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span></code></pre></div>
           </div>
 
           
@@ -925,7 +922,7 @@ go get -t golang.org/x/tools/cmd/goimports
 
   
   <div class="copyright py-4">
-    <span>  2016 - 2022 &copy; | Theme <a href='https://github.com/EliiseS/AllinOne' target="_blank">AllinOne</a> </span>
+    <span>  2016 - 2023 &copy; | Theme <a href='https://github.com/EliiseS/AllinOne' target="_blank">AllinOne</a> </span>
   </div>
   
 

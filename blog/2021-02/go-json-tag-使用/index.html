@@ -393,35 +393,35 @@
 <h2 id="1struct接收json中的字符串">1、struct接收json中的字符串</h2>
 <h3 id="1常规类型">1、常规类型</h3>
 <p>当接收或者转换的类型为string类型时，可以在标签后面增加<code>string</code>标志</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="kn">package</span> <span class="nx">main</span>
-
-<span class="kn">import</span> <span class="p">(</span>
-	<span class="s">&#34;encoding/json&#34;</span>
-	<span class="s">&#34;fmt&#34;</span>
-	<span class="s">&#34;github.com/gogf/gf/os/gtime&#34;</span>
-<span class="p">)</span>
-
-<span class="kd">type</span> <span class="nx">Student</span> <span class="kd">struct</span> <span class="p">{</span>
-	<span class="nx">Id</span> <span class="kt">int64</span> <span class="s">`json:&#34;id,string&#34;`</span>
-	<span class="nx">Name</span> <span class="kt">string</span> <span class="s">`json:&#34;name&#34;`</span>
-	<span class="nx">Age</span> <span class="kt">int64</span> <span class="s">`json:&#34;age,string&#34;`</span>
-	<span class="nx">Ctime</span> <span class="o">*</span><span class="nx">gtime</span><span class="p">.</span><span class="nx">Time</span> <span class="s">`json:&#34;ctime,string&#34;`</span>
-<span class="p">}</span>
-
-<span class="kd">func</span> <span class="nf">main</span><span class="p">()</span>  <span class="p">{</span>
-	<span class="nx">s</span> <span class="o">:=</span> <span class="s">`{&#34;id&#34;:&#34;232&#34;,&#34;name&#34;:&#34;咚咚咚&#34;,&#34;age&#34;:&#34;17&#34;,&#34;ctime&#34;:&#34;2021-02-18 09:30:34&#34;}`</span>
-	<span class="nx">s2</span> <span class="o">:=</span> <span class="nb">new</span><span class="p">(</span><span class="nx">Student</span><span class="p">)</span>
-	<span class="nx">err</span> <span class="o">:=</span> <span class="nx">json</span><span class="p">.</span><span class="nf">Unmarshal</span><span class="p">([]</span><span class="nb">byte</span><span class="p">(</span><span class="nx">s</span><span class="p">),</span> <span class="nx">s2</span><span class="p">)</span>
-	<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
-		<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
-	<span class="p">}</span>
-	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="o">*</span><span class="nx">s2</span><span class="p">)</span>
-<span class="p">}</span>
-
-<span class="cm">/*
-</span><span class="cm">{232 咚咚咚 17 2021-02-18 09:30:34}
-</span><span class="cm">*/</span>
-</code></pre></div>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kn">package</span> <span class="nx">main</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="p">(</span>
+</span></span><span class="line"><span class="cl">	<span class="s">&#34;encoding/json&#34;</span>
+</span></span><span class="line"><span class="cl">	<span class="s">&#34;fmt&#34;</span>
+</span></span><span class="line"><span class="cl">	<span class="s">&#34;github.com/gogf/gf/os/gtime&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">type</span> <span class="nx">Student</span> <span class="kd">struct</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">Id</span> <span class="kt">int64</span> <span class="s">`json:&#34;id,string&#34;`</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">Name</span> <span class="kt">string</span> <span class="s">`json:&#34;name&#34;`</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">Age</span> <span class="kt">int64</span> <span class="s">`json:&#34;age,string&#34;`</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">Ctime</span> <span class="o">*</span><span class="nx">gtime</span><span class="p">.</span><span class="nx">Time</span> <span class="s">`json:&#34;ctime,string&#34;`</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span>  <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">s</span> <span class="o">:=</span> <span class="s">`{&#34;id&#34;:&#34;232&#34;,&#34;name&#34;:&#34;咚咚咚&#34;,&#34;age&#34;:&#34;17&#34;,&#34;ctime&#34;:&#34;2021-02-18 09:30:34&#34;}`</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">s2</span> <span class="o">:=</span> <span class="nb">new</span><span class="p">(</span><span class="nx">Student</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">err</span> <span class="o">:=</span> <span class="nx">json</span><span class="p">.</span><span class="nf">Unmarshal</span><span class="p">([]</span><span class="nb">byte</span><span class="p">(</span><span class="nx">s</span><span class="p">),</span> <span class="nx">s2</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="o">*</span><span class="nx">s2</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="cm">/*
+</span></span></span><span class="line"><span class="cl"><span class="cm">{232 咚咚咚 17 2021-02-18 09:30:34}
+</span></span></span><span class="line"><span class="cl"><span class="cm">*/</span>
+</span></span></code></pre></div>
           </div>
 
           
@@ -635,7 +635,7 @@
 
   
   <div class="copyright py-4">
-    <span>  2016 - 2022 &copy; | Theme <a href='https://github.com/EliiseS/AllinOne' target="_blank">AllinOne</a> </span>
+    <span>  2016 - 2023 &copy; | Theme <a href='https://github.com/EliiseS/AllinOne' target="_blank">AllinOne</a> </span>
   </div>
   
 

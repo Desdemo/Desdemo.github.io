@@ -390,70 +390,69 @@
 
           <div class="post-content markdown">
             <h2 id="1利用反射获取结构体的字段和tag">1、利用反射获取结构体的字段和tag</h2>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="kd">type</span> <span class="nx">A</span> <span class="kd">struct</span> <span class="p">{</span>
-	<span class="nx">Id</span>                <span class="kt">int64</span>  <span class="s">`json:&#34;id&#34; orm:&#34;Id&#34;`</span>
-	<span class="nx">Name</span>              <span class="kt">string</span> <span class="s">`json:&#34;name&#34; orm:&#34;Name&#34;`</span>
-	<span class="nx">AppointmentStatus</span> <span class="kt">string</span> <span class="s">`json:&#34;appointment_status&#34; orm:&#34;Status&#34;`</span>
-<span class="p">}</span>
-
-<span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
-
-	<span class="nx">a</span> <span class="o">:=</span> <span class="s">&#34;6&#34;</span>
-
-	<span class="nx">log</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">reflect</span><span class="p">.</span><span class="nf">ValueOf</span><span class="p">(</span><span class="nx">a</span><span class="p">))</span>
-	<span class="nx">log</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">reflect</span><span class="p">.</span><span class="nf">TypeOf</span><span class="p">(</span><span class="nx">a</span><span class="p">))</span>
-
-	<span class="nx">b</span> <span class="o">:=</span> <span class="nx">A</span><span class="p">{</span>
-		<span class="nx">Id</span><span class="p">:</span>                <span class="mi">6</span><span class="p">,</span>
-		<span class="nx">Name</span><span class="p">:</span>              <span class="s">&#34;dongdong&#34;</span><span class="p">,</span>
-		<span class="nx">AppointmentStatus</span><span class="p">:</span> <span class="s">&#34;通过&#34;</span><span class="p">,</span>
-	<span class="p">}</span>
-	<span class="nx">c</span> <span class="o">:=</span> <span class="o">&amp;</span><span class="nx">A</span><span class="p">{</span>
-		<span class="nx">Id</span><span class="p">:</span>                <span class="mi">7</span><span class="p">,</span>
-		<span class="nx">Name</span><span class="p">:</span>              <span class="s">&#34;xx&#34;</span><span class="p">,</span>
-		<span class="nx">AppointmentStatus</span><span class="p">:</span> <span class="s">&#34;111&#34;</span><span class="p">,</span>
-	<span class="p">}</span>
-	<span class="nx">log</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">reflect</span><span class="p">.</span><span class="nf">ValueOf</span><span class="p">(</span><span class="nx">b</span><span class="p">))</span>
-	<span class="nx">log</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">reflect</span><span class="p">.</span><span class="nf">TypeOf</span><span class="p">(</span><span class="nx">b</span><span class="p">).</span><span class="nf">Kind</span><span class="p">())</span>
-	<span class="nx">log</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">reflect</span><span class="p">.</span><span class="nf">TypeOf</span><span class="p">(</span><span class="nx">c</span><span class="p">).</span><span class="nf">Kind</span><span class="p">())</span>
-	<span class="nx">rt</span> <span class="o">:=</span> <span class="nx">reflect</span><span class="p">.</span><span class="nf">TypeOf</span><span class="p">(</span><span class="nx">b</span><span class="p">)</span>
-	<span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="p">&lt;</span> <span class="nx">reflect</span><span class="p">.</span><span class="nf">TypeOf</span><span class="p">(</span><span class="nx">b</span><span class="p">).</span><span class="nf">NumField</span><span class="p">();</span> <span class="nx">i</span><span class="o">++</span> <span class="p">{</span>
-		<span class="nx">log</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">rt</span><span class="p">.</span><span class="nf">Field</span><span class="p">(</span><span class="nx">i</span><span class="p">).</span><span class="nx">Name</span><span class="p">,</span> <span class="nx">rt</span><span class="p">.</span><span class="nf">Field</span><span class="p">(</span><span class="nx">i</span><span class="p">).</span><span class="nx">Type</span><span class="p">,</span> <span class="nx">rt</span><span class="p">.</span><span class="nf">Field</span><span class="p">(</span><span class="nx">i</span><span class="p">).</span><span class="nx">Tag</span><span class="p">)</span>
-	<span class="p">}</span>
-<span class="p">}</span>
-
-<span class="c1">// SetFieldInfo 根据反射获取实体的信息
-</span><span class="c1"></span><span class="kd">func</span> <span class="nf">SetFieldInfo</span><span class="p">(</span><span class="nx">entity</span> <span class="kd">interface</span><span class="p">{})</span> <span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="kt">string</span> <span class="p">{</span>
-	<span class="nx">rt</span> <span class="o">:=</span> <span class="nx">reflect</span><span class="p">.</span><span class="nf">TypeOf</span><span class="p">(</span><span class="nx">entity</span><span class="p">)</span>
-	<span class="k">if</span> <span class="nx">rt</span><span class="p">.</span><span class="nf">Kind</span><span class="p">().</span><span class="nf">String</span><span class="p">()</span> <span class="o">==</span> <span class="s">&#34;ptr&#34;</span> <span class="p">{</span>
-		<span class="nx">rt</span> <span class="p">=</span> <span class="nx">rt</span><span class="p">.</span><span class="nf">Elem</span><span class="p">()</span>
-	<span class="p">}</span>
-	<span class="k">if</span> <span class="nx">rt</span><span class="p">.</span><span class="nf">Kind</span><span class="p">().</span><span class="nf">String</span><span class="p">()</span> <span class="o">!=</span> <span class="s">&#34;struct&#34;</span> <span class="p">{</span>
-		<span class="k">return</span> <span class="kc">nil</span>
-	<span class="p">}</span>
-	<span class="nx">infoMap</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">(</span><span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="kt">string</span><span class="p">)</span>
-	<span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="p">&lt;</span> <span class="nx">rt</span><span class="p">.</span><span class="nf">NumField</span><span class="p">();</span> <span class="nx">i</span><span class="o">++</span> <span class="p">{</span>
-		<span class="nx">jsonTag</span> <span class="o">:=</span> <span class="nx">rt</span><span class="p">.</span><span class="nf">Field</span><span class="p">(</span><span class="nx">i</span><span class="p">).</span><span class="nx">Tag</span><span class="p">.</span><span class="nf">Get</span><span class="p">(</span><span class="s">&#34;json&#34;</span><span class="p">)</span>
-		<span class="nx">ormTag</span> <span class="o">:=</span> <span class="nx">rt</span><span class="p">.</span><span class="nf">Field</span><span class="p">(</span><span class="nx">i</span><span class="p">).</span><span class="nx">Tag</span><span class="p">.</span><span class="nf">Get</span><span class="p">(</span><span class="s">&#34;orm&#34;</span><span class="p">)</span>
-		<span class="k">if</span> <span class="nx">jsonTag</span> <span class="o">==</span> <span class="s">&#34;&#34;</span> <span class="p">{</span>
-			<span class="k">continue</span>
-		<span class="p">}</span>
-		<span class="k">if</span> <span class="nx">ormTag</span> <span class="o">==</span> <span class="s">&#34;&#34;</span> <span class="p">{</span>
-			<span class="nx">infoMap</span><span class="p">[</span><span class="nx">jsonTag</span><span class="p">]</span> <span class="p">=</span> <span class="nx">rt</span><span class="p">.</span><span class="nf">Field</span><span class="p">(</span><span class="nx">i</span><span class="p">).</span><span class="nx">Name</span>
-		<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-			<span class="nx">infoMap</span><span class="p">[</span><span class="nx">jsonTag</span><span class="p">]</span> <span class="p">=</span> <span class="nx">ormTag</span>
-		<span class="p">}</span>
-	<span class="p">}</span>
-	<span class="k">return</span> <span class="nx">infoMap</span>
-<span class="p">}</span>
-
-</code></pre></div><p><code>reflect</code>中根据<code>reflect.TypeOf</code>可以得到元数据信息</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kd">type</span> <span class="nx">A</span> <span class="kd">struct</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">Id</span>                <span class="kt">int64</span>  <span class="s">`json:&#34;id&#34; orm:&#34;Id&#34;`</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">Name</span>              <span class="kt">string</span> <span class="s">`json:&#34;name&#34; orm:&#34;Name&#34;`</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">AppointmentStatus</span> <span class="kt">string</span> <span class="s">`json:&#34;appointment_status&#34; orm:&#34;Status&#34;`</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="nx">a</span> <span class="o">:=</span> <span class="s">&#34;6&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="nx">log</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">reflect</span><span class="p">.</span><span class="nf">ValueOf</span><span class="p">(</span><span class="nx">a</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">log</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">reflect</span><span class="p">.</span><span class="nf">TypeOf</span><span class="p">(</span><span class="nx">a</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="nx">b</span> <span class="o">:=</span> <span class="nx">A</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">Id</span><span class="p">:</span>                <span class="mi">6</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">Name</span><span class="p">:</span>              <span class="s">&#34;dongdong&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">AppointmentStatus</span><span class="p">:</span> <span class="s">&#34;通过&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">c</span> <span class="o">:=</span> <span class="o">&amp;</span><span class="nx">A</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">Id</span><span class="p">:</span>                <span class="mi">7</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">Name</span><span class="p">:</span>              <span class="s">&#34;xx&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">AppointmentStatus</span><span class="p">:</span> <span class="s">&#34;111&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">log</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">reflect</span><span class="p">.</span><span class="nf">ValueOf</span><span class="p">(</span><span class="nx">b</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">log</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">reflect</span><span class="p">.</span><span class="nf">TypeOf</span><span class="p">(</span><span class="nx">b</span><span class="p">).</span><span class="nf">Kind</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">log</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">reflect</span><span class="p">.</span><span class="nf">TypeOf</span><span class="p">(</span><span class="nx">c</span><span class="p">).</span><span class="nf">Kind</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">rt</span> <span class="o">:=</span> <span class="nx">reflect</span><span class="p">.</span><span class="nf">TypeOf</span><span class="p">(</span><span class="nx">b</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="p">&lt;</span> <span class="nx">reflect</span><span class="p">.</span><span class="nf">TypeOf</span><span class="p">(</span><span class="nx">b</span><span class="p">).</span><span class="nf">NumField</span><span class="p">();</span> <span class="nx">i</span><span class="o">++</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">log</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">rt</span><span class="p">.</span><span class="nf">Field</span><span class="p">(</span><span class="nx">i</span><span class="p">).</span><span class="nx">Name</span><span class="p">,</span> <span class="nx">rt</span><span class="p">.</span><span class="nf">Field</span><span class="p">(</span><span class="nx">i</span><span class="p">).</span><span class="nx">Type</span><span class="p">,</span> <span class="nx">rt</span><span class="p">.</span><span class="nf">Field</span><span class="p">(</span><span class="nx">i</span><span class="p">).</span><span class="nx">Tag</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// SetFieldInfo 根据反射获取实体的信息
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kd">func</span> <span class="nf">SetFieldInfo</span><span class="p">(</span><span class="nx">entity</span> <span class="kd">interface</span><span class="p">{})</span> <span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="kt">string</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">rt</span> <span class="o">:=</span> <span class="nx">reflect</span><span class="p">.</span><span class="nf">TypeOf</span><span class="p">(</span><span class="nx">entity</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="nx">rt</span><span class="p">.</span><span class="nf">Kind</span><span class="p">().</span><span class="nf">String</span><span class="p">()</span> <span class="o">==</span> <span class="s">&#34;ptr&#34;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">rt</span> <span class="p">=</span> <span class="nx">rt</span><span class="p">.</span><span class="nf">Elem</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="nx">rt</span><span class="p">.</span><span class="nf">Kind</span><span class="p">().</span><span class="nf">String</span><span class="p">()</span> <span class="o">!=</span> <span class="s">&#34;struct&#34;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="k">return</span> <span class="kc">nil</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">infoMap</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">(</span><span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="kt">string</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="p">&lt;</span> <span class="nx">rt</span><span class="p">.</span><span class="nf">NumField</span><span class="p">();</span> <span class="nx">i</span><span class="o">++</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">jsonTag</span> <span class="o">:=</span> <span class="nx">rt</span><span class="p">.</span><span class="nf">Field</span><span class="p">(</span><span class="nx">i</span><span class="p">).</span><span class="nx">Tag</span><span class="p">.</span><span class="nf">Get</span><span class="p">(</span><span class="s">&#34;json&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">ormTag</span> <span class="o">:=</span> <span class="nx">rt</span><span class="p">.</span><span class="nf">Field</span><span class="p">(</span><span class="nx">i</span><span class="p">).</span><span class="nx">Tag</span><span class="p">.</span><span class="nf">Get</span><span class="p">(</span><span class="s">&#34;orm&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">		<span class="k">if</span> <span class="nx">jsonTag</span> <span class="o">==</span> <span class="s">&#34;&#34;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">			<span class="k">continue</span>
+</span></span><span class="line"><span class="cl">		<span class="p">}</span>
+</span></span><span class="line"><span class="cl">		<span class="k">if</span> <span class="nx">ormTag</span> <span class="o">==</span> <span class="s">&#34;&#34;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">			<span class="nx">infoMap</span><span class="p">[</span><span class="nx">jsonTag</span><span class="p">]</span> <span class="p">=</span> <span class="nx">rt</span><span class="p">.</span><span class="nf">Field</span><span class="p">(</span><span class="nx">i</span><span class="p">).</span><span class="nx">Name</span>
+</span></span><span class="line"><span class="cl">		<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">			<span class="nx">infoMap</span><span class="p">[</span><span class="nx">jsonTag</span><span class="p">]</span> <span class="p">=</span> <span class="nx">ormTag</span>
+</span></span><span class="line"><span class="cl">		<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="nx">infoMap</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p><code>reflect</code>中根据<code>reflect.TypeOf</code>可以得到元数据信息</p>
 <p><code>rt.Kind()</code>获取类型信息</p>
 <p><code>rt.Elem()</code>取地址指针</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="p">&lt;</span> <span class="nx">reflect</span><span class="p">.</span><span class="nf">TypeOf</span><span class="p">(</span><span class="nx">b</span><span class="p">).</span><span class="nf">NumField</span><span class="p">();</span> <span class="nx">i</span><span class="o">++</span> <span class="p">{</span>
-		<span class="nx">log</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">rt</span><span class="p">.</span><span class="nf">Field</span><span class="p">(</span><span class="nx">i</span><span class="p">).</span><span class="nx">Name</span><span class="p">,</span> <span class="nx">rt</span><span class="p">.</span><span class="nf">Field</span><span class="p">(</span><span class="nx">i</span><span class="p">).</span><span class="nx">Type</span><span class="p">,</span> <span class="nx">rt</span><span class="p">.</span><span class="nf">Field</span><span class="p">(</span><span class="nx">i</span><span class="p">).</span><span class="nx">Tag</span><span class="p">)</span>
-<span class="p">}</span>
-</code></pre></div><p><code>rt.Field(i).Name</code>获取字段名</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="p">&lt;</span> <span class="nx">reflect</span><span class="p">.</span><span class="nf">TypeOf</span><span class="p">(</span><span class="nx">b</span><span class="p">).</span><span class="nf">NumField</span><span class="p">();</span> <span class="nx">i</span><span class="o">++</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">log</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">rt</span><span class="p">.</span><span class="nf">Field</span><span class="p">(</span><span class="nx">i</span><span class="p">).</span><span class="nx">Name</span><span class="p">,</span> <span class="nx">rt</span><span class="p">.</span><span class="nf">Field</span><span class="p">(</span><span class="nx">i</span><span class="p">).</span><span class="nx">Type</span><span class="p">,</span> <span class="nx">rt</span><span class="p">.</span><span class="nf">Field</span><span class="p">(</span><span class="nx">i</span><span class="p">).</span><span class="nx">Tag</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p><code>rt.Field(i).Name</code>获取字段名</p>
 <p><code>rt.Field(i).Tag</code>获取字段Tag</p>
 
           </div>
@@ -620,7 +619,7 @@
 
   
   <div class="copyright py-4">
-    <span>  2016 - 2022 &copy; | Theme <a href='https://github.com/EliiseS/AllinOne' target="_blank">AllinOne</a> </span>
+    <span>  2016 - 2023 &copy; | Theme <a href='https://github.com/EliiseS/AllinOne' target="_blank">AllinOne</a> </span>
   </div>
   
 

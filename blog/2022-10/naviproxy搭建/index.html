@@ -393,47 +393,47 @@
 <p>1、https://github.com/klzgrad/naiveproxy</p>
 <p>2、https://github.com/bolucat/naive</p>
 <h1 id="1服务端构建">1、服务端构建</h1>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="c1">#查看golang版本</span>
-go version
-<span class="c1">#如果版本太低的话，需要升级golang</span>
-apt-get remove golang
-apt-get remove golang-go
-apt-get autoremove
-<span class="c1"># 以go1.18.5版本为例</span>
-wget https://golang.google.cn/dl/go1.18.5.linux-amd64.tar.gz
-sudo tar xfz go1.18.5.linux-amd64.tar.gz -C /usr/local
-sudo vim /etc/profile
-<span class="nb">cd</span> ~
-vim .bashrc
-go env -w <span class="nv">GOPROXY</span><span class="o">=</span><span class="s2">&#34;https://goproxy.cn&#34;</span>
-</code></pre></div><p>安装caddy</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash">go install github.com/caddyserver/xcaddy/cmd/xcaddy@latest
-<span class="c1"># 在golang环境变量中找到GOBIN查看路径，如果为空则会安装到GOROOT或GOPATH路径下的bin目录中</span>
-<span class="c1"># go env </span>
-<span class="c1"># 构建</span>
-xcaddy build --with github.com/caddyserver/forwardproxy@caddy2<span class="o">=</span>github.com/klzgrad/forwardproxy@naive
-<span class="c1"># 构建完成后同目录下 可以看到caddy可执行程序</span>
-<span class="c1"># 编写Caddyfile</span>
-mkdir /etc/caddy
-vim /etc/caddy/Caddyfile
-</code></pre></div><p>Caddyfile文件示例</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl"><span class="c1">#查看golang版本</span>
+</span></span><span class="line"><span class="cl">go version
+</span></span><span class="line"><span class="cl"><span class="c1">#如果版本太低的话，需要升级golang</span>
+</span></span><span class="line"><span class="cl">apt-get remove golang
+</span></span><span class="line"><span class="cl">apt-get remove golang-go
+</span></span><span class="line"><span class="cl">apt-get autoremove
+</span></span><span class="line"><span class="cl"><span class="c1"># 以go1.18.5版本为例</span>
+</span></span><span class="line"><span class="cl">wget https://golang.google.cn/dl/go1.18.5.linux-amd64.tar.gz
+</span></span><span class="line"><span class="cl">sudo tar xfz go1.18.5.linux-amd64.tar.gz -C /usr/local
+</span></span><span class="line"><span class="cl">sudo vim /etc/profile
+</span></span><span class="line"><span class="cl"><span class="nb">cd</span> ~
+</span></span><span class="line"><span class="cl">vim .bashrc
+</span></span><span class="line"><span class="cl">go env -w <span class="nv">GOPROXY</span><span class="o">=</span><span class="s2">&#34;https://goproxy.cn&#34;</span>
+</span></span></code></pre></div><p>安装caddy</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">go install github.com/caddyserver/xcaddy/cmd/xcaddy@latest
+</span></span><span class="line"><span class="cl"><span class="c1"># 在golang环境变量中找到GOBIN查看路径，如果为空则会安装到GOROOT或GOPATH路径下的bin目录中</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># go env </span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 构建</span>
+</span></span><span class="line"><span class="cl">xcaddy build --with github.com/caddyserver/forwardproxy@caddy2<span class="o">=</span>github.com/klzgrad/forwardproxy@naive
+</span></span><span class="line"><span class="cl"><span class="c1"># 构建完成后同目录下 可以看到caddy可执行程序</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 编写Caddyfile</span>
+</span></span><span class="line"><span class="cl">mkdir /etc/caddy
+</span></span><span class="line"><span class="cl">vim /etc/caddy/Caddyfile
+</span></span></code></pre></div><p>Caddyfile文件示例</p>
 <p>将自己的域名 邮箱 user passwd 替换上</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-Go" data-lang="Go"><span class="p">:</span><span class="mi">443</span><span class="p">,</span> <span class="nx">domain</span><span class="p">.</span><span class="nx">com</span>  <span class="err">#</span><span class="nx">你的域名</span>
-<span class="nx">tls</span> <span class="nx">aaa</span><span class="err">@</span><span class="nx">mail</span><span class="p">.</span><span class="nx">com</span>  <span class="err">#</span> <span class="nx">邮箱</span>
-<span class="nx">route</span> <span class="p">{</span>
- <span class="nx">forward_proxy</span> <span class="p">{</span>
-   <span class="nx">basic_auth</span> <span class="nx">user</span> <span class="nx">passwd</span>
-   <span class="nx">hide_ip</span>
-   <span class="nx">hide_via</span>
-   <span class="nx">probe_resistance</span>
-  <span class="p">}</span>
- <span class="nx">file_server</span> <span class="p">{</span>
-        <span class="nx">root</span> <span class="o">/</span><span class="kd">var</span><span class="o">/</span><span class="nx">www</span><span class="o">/</span><span class="nx">html</span>
- <span class="p">}</span>
-<span class="p">}</span>
-</code></pre></div><p>然后测试运行下</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash">caddy run --config /etc/caddy/Caddyfile
-</code></pre></div><p>如果一切正常，可以将caddy改为守护进程方式</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-Go" data-lang="Go"><span class="line"><span class="cl"><span class="p">:</span><span class="mi">443</span><span class="p">,</span> <span class="nx">domain</span><span class="p">.</span><span class="nx">com</span>  <span class="err">#你的域名</span>
+</span></span><span class="line"><span class="cl"><span class="nx">tls</span> <span class="nx">aaa</span><span class="err">@</span><span class="nx">mail</span><span class="p">.</span><span class="nx">com</span>  <span class="err">#</span> <span class="err">邮箱</span>
+</span></span><span class="line"><span class="cl"><span class="nx">route</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl"> <span class="nx">forward_proxy</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">   <span class="nx">basic_auth</span> <span class="nx">user</span> <span class="nx">passwd</span>
+</span></span><span class="line"><span class="cl">   <span class="nx">hide_ip</span>
+</span></span><span class="line"><span class="cl">   <span class="nx">hide_via</span>
+</span></span><span class="line"><span class="cl">   <span class="nx">probe_resistance</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl"> <span class="nx">file_server</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">root</span> <span class="o">/</span><span class="kd">var</span><span class="o">/</span><span class="nx">www</span><span class="o">/</span><span class="nx">html</span>
+</span></span><span class="line"><span class="cl"> <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>然后测试运行下</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">caddy run --config /etc/caddy/Caddyfile
+</span></span></code></pre></div><p>如果一切正常，可以将caddy改为守护进程方式</p>
 <p>参考：https://github.com/klzgrad/naiveproxy/wiki/Run-Caddy-as-a-daemon</p>
 <h1 id="2windows使用">2、windows使用</h1>
 <p>参考：https://github.com/bolucat/naive#windows-users</p>
@@ -668,7 +668,7 @@ vim /etc/caddy/Caddyfile
 
   
   <div class="copyright py-4">
-    <span>  2016 - 2022 &copy; | Theme <a href='https://github.com/EliiseS/AllinOne' target="_blank">AllinOne</a> </span>
+    <span>  2016 - 2023 &copy; | Theme <a href='https://github.com/EliiseS/AllinOne' target="_blank">AllinOne</a> </span>
   </div>
   
 
