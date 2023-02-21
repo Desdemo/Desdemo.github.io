@@ -1,1 +1,20 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>golang channel探索 on Desdemo</title><link>https://desdemo.top/series/golang-channel%E6%8E%A2%E7%B4%A2/</link><description>Recent content in golang channel探索 on Desdemo</description><generator>Hugo -- gohugo.io</generator><language>zn-Hans</language><lastBuildDate>Sun, 28 Feb 2021 14:13:29 +0800</lastBuildDate><atom:link href="https://desdemo.top/series/golang-channel%E6%8E%A2%E7%B4%A2/index.xml" rel="self" type="application/rss+xml"/><item><title>Go Channel学习</title><link>https://desdemo.top/blog/2021-02/go-channel%E5%AD%A6%E4%B9%A0/</link><pubDate>Sun, 28 Feb 2021 14:13:29 +0800</pubDate><guid>https://desdemo.top/blog/2021-02/go-channel%E5%AD%A6%E4%B9%A0/</guid><description>channel的简单用法</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>golang channel探索 on Desdemo</title>
+    <link>https://desdemo.top/series/golang-channel%E6%8E%A2%E7%B4%A2/</link>
+    <description>Recent content in golang channel探索 on Desdemo</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zn-Hans</language>
+    <lastBuildDate>Sun, 28 Feb 2021 14:13:29 +0800</lastBuildDate><atom:link href="https://desdemo.top/series/golang-channel%E6%8E%A2%E7%B4%A2/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Go Channel学习</title>
+      <link>https://desdemo.top/blog/2021-02/go-channel%E5%AD%A6%E4%B9%A0/</link>
+      <pubDate>Sun, 28 Feb 2021 14:13:29 +0800</pubDate>
+      
+      <guid>https://desdemo.top/blog/2021-02/go-channel%E5%AD%A6%E4%B9%A0/</guid>
+      <description>channel的简单用法</description>
+    </item>
+    
+  </channel>
+</rss>
