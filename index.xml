@@ -6,7 +6,16 @@
     <description>Recent content on Desdemo</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zn-Hans</language>
-    <lastBuildDate>Thu, 20 Oct 2022 15:11:58 +0800</lastBuildDate><atom:link href="https://desdemo.top/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 16 May 2023 15:57:16 +0800</lastBuildDate><atom:link href="https://desdemo.top/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Vaultwarden 搭建自己的密码管理器</title>
+      <link>https://desdemo.top/blog/2023-05/vaultwarden-%E6%90%AD%E5%BB%BA%E8%87%AA%E5%B7%B1%E7%9A%84%E5%AF%86%E7%A0%81%E7%AE%A1%E7%90%86%E5%99%A8/</link>
+      <pubDate>Tue, 16 May 2023 15:57:16 +0800</pubDate>
+      
+      <guid>https://desdemo.top/blog/2023-05/vaultwarden-%E6%90%AD%E5%BB%BA%E8%87%AA%E5%B7%B1%E7%9A%84%E5%AF%86%E7%A0%81%E7%AE%A1%E7%90%86%E5%99%A8/</guid>
+      <description>Vaultwarden安装记录</description>
+    </item>
+    
     <item>
       <title>Naviproxy搭建</title>
       <link>https://desdemo.top/blog/2022-10/naviproxy%E6%90%AD%E5%BB%BA/</link>
