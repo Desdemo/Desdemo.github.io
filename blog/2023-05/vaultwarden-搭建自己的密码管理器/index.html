@@ -7,25 +7,25 @@
   <meta name="MobileOptimized" content="320">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, maximum-scale=1" />
   <meta name="author" content="Desdemo">
-  <meta name="description" content="iris配置使用swagger记录">
+  <meta name="description" content="Vaultwarden安装记录">
   
-  <meta property="og:title" content="Swagger&#43;iris使用记录" />
-<meta property="og:description" content="iris配置使用swagger记录" />
+  <meta property="og:title" content="Vaultwarden 搭建自己的密码管理器" />
+<meta property="og:description" content="Vaultwarden安装记录" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://desdemo.top/blog/2021-10/swagger-iris%E4%BD%BF%E7%94%A8%E8%AE%B0%E5%BD%95/" /><meta property="article:section" content="blog" />
-<meta property="article:published_time" content="2021-10-22T16:46:16+08:00" />
-<meta property="article:modified_time" content="2021-10-22T16:46:16+08:00" />
+<meta property="og:url" content="https://desdemo.top/blog/2023-05/vaultwarden-%E6%90%AD%E5%BB%BA%E8%87%AA%E5%B7%B1%E7%9A%84%E5%AF%86%E7%A0%81%E7%AE%A1%E7%90%86%E5%99%A8/" /><meta property="article:section" content="blog" />
+<meta property="article:published_time" content="2023-05-16T15:57:16+08:00" />
+<meta property="article:modified_time" content="2023-05-16T15:57:16+08:00" />
 
 
 
 
   <title>
   
-       Swagger&#43;iris使用记录 | Desdemo 
+       Vaultwarden 搭建自己的密码管理器 | Desdemo 
   
   </title>
 
-  <link rel="canonical" href="https://desdemo.top/blog/2021-10/swagger-iris%E4%BD%BF%E7%94%A8%E8%AE%B0%E5%BD%95/">
+  <link rel="canonical" href="https://desdemo.top/blog/2023-05/vaultwarden-%E6%90%AD%E5%BB%BA%E8%87%AA%E5%B7%B1%E7%9A%84%E5%AF%86%E7%A0%81%E7%AE%A1%E7%90%86%E5%99%A8/">
 
   
   
@@ -390,15 +390,15 @@
   
 
   </ul>
-  <div class="px-4 post-heading">Swagger&#43;iris使用记录</div>
+  <div class="px-4 post-heading">Vaultwarden 搭建自己的密码管理器</div>
 <ul class="post-meta li-x mt-1">
   
-    <li>Oct 22, 2021</li>
+    <li>May 16, 2023</li>
   
 
   
     <li class="middot"></li>
-    <li>2 minute read</li>
+    <li>1 minute read</li>
   
 </ul>
 
@@ -408,67 +408,31 @@
 
 
           <div class="post-content markdown">
-            <p>参考链接：https://github.com/iris-contrib/swagger</p>
-<h2 id="1安装swagger">1、安装swagger</h2>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="k">go</span> <span class="nx">get</span> <span class="o">-</span><span class="nx">u</span> <span class="nx">github</span><span class="p">.</span><span class="nx">com</span><span class="o">/</span><span class="nx">swaggo</span><span class="o">/</span><span class="nx">swag</span><span class="o">/</span><span class="nx">cmd</span><span class="o">/</span><span class="nx">swag</span>
-</span></span></code></pre></div><h2 id="2生成">2、生成</h2>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">swag init 
-</span></span><span class="line"><span class="cl"><span class="c1"># 指定路径的用法</span>
-</span></span><span class="line"><span class="cl">swag init .<span class="se">\s</span>erver<span class="se">\m</span>ain.go
-</span></span></code></pre></div><p>注意：一定要在main.go的同级目录下执行</p>
-<p>执行完成后会在docs文件夹下面生成<code>doc.go</code>、<code>swagger.json</code>和<code>swagger.yaml</code>三个文件</p>
-<h2 id="3使用">3、使用</h2>
-<p>在<code>main.go</code>或者<code>router</code>中中引入相关方法</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kn">package</span> <span class="nx">main</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="p">(</span>
-</span></span><span class="line"><span class="cl">	<span class="s">&#34;github.com/kataras/iris/v12&#34;</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">	<span class="s">&#34;github.com/iris-contrib/swagger/v12&#34;</span>
-</span></span><span class="line"><span class="cl">	<span class="s">&#34;github.com/iris-contrib/swagger/v12/swaggerFiles&#34;</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">	<span class="nx">_</span> <span class="s">&#34;learn-code/iris/docs&#34;</span>  <span class="c1">// 必须引入生成后的路径
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">	<span class="nx">app</span> <span class="o">:=</span> <span class="nx">iris</span><span class="p">.</span><span class="nf">New</span><span class="p">()</span>
-</span></span><span class="line"><span class="cl">	<span class="nx">config</span> <span class="o">:=</span> <span class="o">&amp;</span><span class="nx">swagger</span><span class="p">.</span><span class="nx">Config</span><span class="p">{</span>
-</span></span><span class="line"><span class="cl">		<span class="nx">URL</span><span class="p">:</span> <span class="s">&#34;http://localhost:8080/swagger/doc.json&#34;</span><span class="p">,</span> <span class="c1">//The url pointing to API definition
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="p">}</span>
-</span></span><span class="line"><span class="cl">	<span class="c1">// use swagger middleware to
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">app</span><span class="p">.</span><span class="nf">Get</span><span class="p">(</span><span class="s">&#34;/swagger/{any:path}&#34;</span><span class="p">,</span> <span class="nx">swagger</span><span class="p">.</span><span class="nf">CustomWrapHandler</span><span class="p">(</span><span class="nx">config</span><span class="p">,</span> <span class="nx">swaggerFiles</span><span class="p">.</span><span class="nx">Handler</span><span class="p">))</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">	<span class="nx">app</span><span class="p">.</span><span class="nf">Run</span><span class="p">(</span><span class="nx">iris</span><span class="p">.</span><span class="nf">Addr</span><span class="p">(</span><span class="s">&#34;:8080&#34;</span><span class="p">))</span>
+            <h1 id="安装">安装</h1>
+<p>开源版本的地址:<a href="https://github.com/dani-garcia/vaultwarden/">地址</a></p>
+<p>最简单的就是使用docker镜像安装</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-dockerfile" data-lang="dockerfile"><span class="line"><span class="cl">docker pull vaultwarden/server:latest<span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span>docker run -d --name vaultwarden <span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span>			-v /vw-data/:/data/ <span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span>			-e <span class="nv">WBE_VAULT_ENABLE</span><span class="o">=</span><span class="nb">true</span> <span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span>			-e <span class="nv">DOMAIN</span><span class="o">=</span>https://yourdomain.com<span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span>			-p 10201:80 <span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span>			vaultwarden/server:latest<span class="err">
+</span></span></span></code></pre></div><p>然后在Caddy中进行代理</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-caddy" data-lang="caddy"><span class="line"><span class="cl"><span class="gh">yourdomain.com</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="k">tls</span> <span class="s">xxxx@mail.com</span>
+</span></span><span class="line"><span class="cl">  <span class="k">reverse_proxy</span> <span class="s">/</span> <span class="n">127.0.0.1</span><span class="p">:</span><span class="mi">10201</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span></code></pre></div><p>至此，访问<code>http://localhost:8080/swagger/index.html</code>即可</p>
-<h2 id="4语法">4、语法</h2>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="c1">// PutOrder
-</span></span></span><span class="line"><span class="cl"><span class="c1">// @Summary  修改订单
-</span></span></span><span class="line"><span class="cl"><span class="c1">// @Description  根据传入的参数修改订单
-</span></span></span><span class="line"><span class="cl"><span class="c1">// @Tags 后台-订单管理
-</span></span></span><span class="line"><span class="cl"><span class="c1">// @Accept json
-</span></span></span><span class="line"><span class="cl"><span class="c1">// @Produce json
-</span></span></span><span class="line"><span class="cl"><span class="c1">// @Param id path int true &#34;ID&#34;
-</span></span></span><span class="line"><span class="cl"><span class="c1">// @Param object body vo.PutOrderReq true &#34;参数&#34;
-</span></span></span><span class="line"><span class="cl"><span class="c1">// @Success 200 {object} infra.bodyObject &#34;{&#34;code&#34;:0,&#34;msg&#34;:&#34;成功&#34;}&#34;
-</span></span></span><span class="line"><span class="cl"><span class="c1">// @Failure 400 {object} infra.bodyObject &#34;{&#34;code&#34;:7,&#34;msg&#34;:&#34;xxxxxx失败&#34;}&#34;
-</span></span></span><span class="line"><span class="cl"><span class="c1">// @Router /orderManage/driverReplaceRule/{id} [put]
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">manage</span> <span class="o">*</span><span class="nx">OrderManage</span><span class="p">)</span> <span class="nf">PutOrder</span><span class="p">(</span><span class="nx">id</span> <span class="kt">int</span><span class="p">)</span>  <span class="nx">x</span><span class="p">.</span><span class="nx">Result</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">	<span class="kd">var</span> <span class="nx">req</span> <span class="nx">vo</span><span class="p">.</span><span class="nx">PutOrderReq</span>
-</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">manage</span><span class="p">.</span><span class="nx">Request</span><span class="p">.</span><span class="nf">ReadJSON</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">req</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">		<span class="k">return</span> <span class="o">&amp;</span><span class="nx">infra</span><span class="p">.</span><span class="nx">JSONResponse</span><span class="p">{</span><span class="nx">Error</span><span class="p">:</span> <span class="nx">err</span><span class="p">}</span>
-</span></span><span class="line"><span class="cl">	<span class="p">}</span>
-</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">manage</span><span class="p">.</span><span class="nx">OrderManageSev</span><span class="p">.</span><span class="nf">ModifyOrder</span><span class="p">(</span><span class="nx">id</span><span class="p">,</span> <span class="nx">manage</span><span class="p">.</span><span class="nx">Request</span><span class="p">.</span><span class="nf">GetAdmin</span><span class="p">(),</span> <span class="nx">req</span><span class="p">);</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">		<span class="k">return</span> <span class="o">&amp;</span><span class="nx">infra</span><span class="p">.</span><span class="nx">JSONResponse</span><span class="p">{</span><span class="nx">Error</span><span class="p">:</span> <span class="nx">err</span><span class="p">}</span>
-</span></span><span class="line"><span class="cl">	<span class="p">}</span>
-</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="o">&amp;</span><span class="nx">infra</span><span class="p">.</span><span class="nx">JSONResponse</span><span class="p">{}</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span></code></pre></div><p>说明：</p>
-<p>@Summary: 概括</p>
-<p>@Description:详细描述</p>
-<p>@Tags:标签，可以进行页面折叠</p>
-<p>@Param: 可以接受多种参数形式，比如上面这种</p>
+</span></span></code></pre></div><h1 id="使用">使用</h1>
+<p>输入地址后进入注册界面,使用邮箱进行注册</p>
+<img src="https://cdn.desdemo.top/blog/image-20230517135904035.png" alt="image-20230517135904035" style="zoom:80%;" />
+<p>添加密码</p>
+<p><img src="https://cdn.desdemo.top/blog/image-20230517140101618.png" alt="image-20230517140101618"></p>
+<p>浏览器使用时,可以使用<strong>Bitwarden</strong>的谷歌插件</p>
+<p>移动端也可以使用<strong>Bitwarden</strong>的移动端</p>
+<p>苹果可以在<code>设置-密码-自动填充</code>处就行选择</p>
+<h1 id="高级用法">高级用法</h1>
+<p>其他的配置可以查看项目<a href="https://github.com/dani-garcia/vaultwarden/wiki">wiki</a></p>
 
           </div>
 
@@ -498,23 +462,16 @@
           <div class="row pt-3">
             <div class="col-md-6">
               
-                <a href=https://desdemo.top/blog/2021-09/golang-reflect-%E5%88%9D%E8%AF%8601/ class="post-meta">Previous
+                <a href=https://desdemo.top/blog/2022-10/naviproxy%E6%90%AD%E5%BB%BA/ class="post-meta">Previous
                   <div class="pt-2 pb-5 d-flex">
                     <i class="fas fa-angle-left text-grey font-weight-bold mr-2 active-color"></i>
-                    <span>golang reflect 初识01 </span>
+                    <span>Naviproxy搭建</span>
                   </div>
                 </a>
               
             </div>
             
             <div class="col-md-6 text-right" >
-              
-                <a href=https://desdemo.top/blog/2022-03/golanges%E4%BD%BF%E7%94%A8%E8%AE%B0%E5%BD%9501/ class="post-meta">Next
-                  <div class="pt-2 pb-5 flex-reverse">
-                    <i class="fas fa-angle-right text-grey font-weight-bold ml-2 active-color"></i>
-                    <span>GolangES使用记录(01)</span>
-                  </div>
-                </a>
               
             </div>
           </div>
@@ -560,8 +517,8 @@
 								
 
 										<li class="nav-item">
-						 					<a class="nav-link" href="#1%e5%ae%89%e8%a3%85swagger">
-												 1、安装swagger
+						 					<a class="nav-link" href="#%e5%ae%89%e8%a3%85">
+												 安装
 											</a>
 										</li>
 						 
@@ -582,8 +539,8 @@
 								
 
 										<li class="nav-item">
-						 					<a class="nav-link" href="#2%e7%94%9f%e6%88%90">
-												 2、生成
+						 					<a class="nav-link" href="#%e4%bd%bf%e7%94%a8">
+												 使用
 											</a>
 										</li>
 						 
@@ -604,30 +561,8 @@
 								
 
 										<li class="nav-item">
-						 					<a class="nav-link" href="#3%e4%bd%bf%e7%94%a8">
-												 3、使用
-											</a>
-										</li>
-						 
-								
-								
-									</ul>
-								
-							
-						
-				 
-						
-						
-							
-								
-								
-									<ul class="nav">
-								
-								
-
-										<li class="nav-item">
-						 					<a class="nav-link" href="#4%e8%af%ad%e6%b3%95">
-												 4、语法
+						 					<a class="nav-link" href="#%e9%ab%98%e7%ba%a7%e7%94%a8%e6%b3%95">
+												 高级用法
 											</a>
 										</li>
 						 
