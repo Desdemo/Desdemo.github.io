@@ -1,12 +1,1 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>About on Desdemo</title>
-    <link>https://desdemo.top/about/</link>
-    <description>Recent content in About on Desdemo</description>
-    <generator>Hugo -- gohugo.io</generator>
-    <language>zn-Hans</language>
-    <lastBuildDate>Mon, 01 Mar 2021 00:00:00 +0000</lastBuildDate>
-    <atom:link href="https://desdemo.top/about/index.xml" rel="self" type="application/rss+xml" />
-  </channel>
-</rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>About on Desdemo</title><link>https://desdemo.top/about/</link><description>Recent content in About on Desdemo</description><generator>Hugo -- gohugo.io</generator><language>zn-Hans</language><lastBuildDate>Mon, 01 Mar 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://desdemo.top/about/index.xml" rel="self" type="application/rss+xml"/></channel></rss>
