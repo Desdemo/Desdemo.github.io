@@ -149,6 +149,39 @@ body {
     font-size: 17px;
     line-height: 1.85;
   }
+
+  /* 压缩页头：288px 太占屏，收紧到 150px，缩小品牌字 */
+  #site-header {
+    height: 150px !important;
+  }
+  #site-header .headfont {
+    padding-top: 0.5rem !important;
+  }
+  #site-header .avatar-md {
+    width: 56px !important;
+  }
+  #site-header h1 {
+    font-size: 1.35rem;
+  }
+
+  /* 文章标题：缩小并收紧行高，层级不抢页头 */
+  .post-heading {
+    font-size: 1.6rem !important;
+    line-height: 1.4 !important;
+  }
+
+  /* meta（日期/阅读时长）：小一号、居中 */
+  .single-post .post-meta li {
+    font-size: 0.8rem;
+  }
+
+  /* 目录按钮：填充浅灰、去边框、圆角 */
+  .toc-toggle {
+    background: #f2f4f6;
+    border: none;
+    border-radius: 8px;
+    font-weight: 500;
+  }
 }
 
 /* 阅读进度条 */
@@ -168,6 +201,7 @@ body {
   display: none;
 }
 @media (max-width: 767.98px) {
+  /* 目录按钮：填充浅灰、去边框、圆角 */
   .toc-toggle {
     display: block;
     width: 100%;
@@ -175,9 +209,10 @@ body {
     margin-bottom: 0.75rem;
     font-size: 0.9rem;
     color: var(--text-dark, #333);
-    background: #fff;
-    border: 1px solid var(--grey-l3, #dedede);
-    border-radius: 4px;
+    background: #f2f4f6;
+    border: none;
+    border-radius: 8px;
+    font-weight: 500;
     text-align: left;
     cursor: pointer;
   }
@@ -190,6 +225,7 @@ body {
     content: " ▴";
     float: right;
   }
+
   .toc-nav {
     display: none;
   }
