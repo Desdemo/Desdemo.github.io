@@ -1,0 +1,199 @@
+/* =========================================
+   站点自定义排版优化（覆盖主题 main.css）
+   ========================================= */
+
+/* 字体栈：优先系统字体，中文回退 PingFang / 雅黑 */
+body {
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI",
+    "Helvetica Neue", Arial, "PingFang SC", "Hiragino Sans GB",
+    "Source Han Sans SC", "Noto Sans CJK SC", "Microsoft YaHei",
+    sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+}
+
+/* JetBrains Mono：本地自托管（仅覆盖拉丁字符，中文回退系统字体） */
+@font-face {
+  font-family: "JetBrains Mono";
+  src: url("/css/fonts/JetBrainsMono-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "JetBrains Mono";
+  src: url("/css/fonts/JetBrainsMono-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "JetBrains Mono";
+  src: url("/css/fonts/JetBrainsMono-Italic.woff2") format("woff2");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+/* 正文：18px + 2.0 行高，中文长文更透气 */
+.post-content {
+  font-family:
+    "JetBrains Mono", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    "Helvetica Neue", Arial, "PingFang SC", "Hiragino Sans GB",
+    "Source Han Sans SC", "Noto Sans CJK SC", "Microsoft YaHei", sans-serif;
+  font-size: 18px;
+  line-height: 2;
+}
+
+/* 文章页收窄行长：38em ≈ 中文 36 字/行，接近舒适阅读区间 */
+.single-post .post-content {
+  max-width: 38em;
+}
+
+/* 段落间距随行高放大 */
+.markdown p {
+  margin-top: 1.2em;
+}
+
+/* 标题层级柔化（相对 18px 正文），加大上下留白 */
+.markdown h1 {
+  font-size: 1.7em;
+  margin-top: 2em;
+  margin-bottom: 1.2em;
+}
+.markdown h2 {
+  font-size: 1.5em;
+  margin-top: 1.8em;
+  margin-bottom: 1em;
+}
+.markdown h3 {
+  font-size: 1.25em;
+  margin-top: 1.5em;
+  margin-bottom: 0.9em;
+}
+.markdown h4 {
+  font-size: 1.1em;
+}
+
+/* 列表/引用块间距呼吸感 */
+.markdown blockquote {
+  padding: 0.8em 1.2em;
+  margin: 1.2em 0;
+}
+.markdown ul,
+.markdown ol {
+  padding-left: 1.6em;
+}
+.markdown li {
+  margin-top: 0.4em;
+}
+
+/* 代码块与正文协调 */
+.markdown pre {
+  font-size: 0.92em;
+  line-height: 1.6;
+}
+
+/* 导航：字号与间距加大 */
+.navbar .nav-link {
+  font-size: 1.05rem;
+  letter-spacing: 0.02em;
+}
+.navbar-nav .nav-item {
+  margin: 0 0.4rem;
+}
+
+/* 原文链接行：样式化成「来源卡」 */
+.single-post .post-content > p:first-child {
+  font-size: 0.92em;
+  line-height: 1.6;
+  padding: 0.6em 1em;
+  margin-top: 0.5em;
+  margin-bottom: 1.5em;
+  background: var(--grey-l4, #f7f7f7);
+  border-left: 3px solid var(--active-color, #38849e);
+  border-radius: 0 6px 6px 0;
+  word-break: break-all;
+}
+.single-post .post-content > p:first-child a {
+  font-weight: 600;
+}
+
+/* 文章 meta（日期/阅读时间）：加深一档提高对比度 */
+.single-post .post-meta,
+.single-post .post-meta li {
+  color: var(--grey-d1, #7c7c7c);
+}
+
+/* TOC：字号加大、链接悬停高亮 */
+.toc-nav .nav-link {
+  font-size: 0.85rem;
+  padding: 0.35rem 0.5rem;
+}
+.toc-nav .nav-link:hover,
+.toc-nav .nav-link.active {
+  color: var(--active-color, #38849e);
+}
+
+/* 移动端：TOC 折行到正文上方，避免内容列挤压；消除负 margin 导致的横溢出 */
+@media (max-width: 767.98px) {
+  .post-main-wrapper .row,
+  .single-post + .row,
+  main .row {
+    margin-left: 0;
+    margin-right: 0;
+  }
+  .single-post {
+    padding: 1.5rem 1rem !important;
+  }
+  .post-content {
+    font-size: 17px;
+    line-height: 1.85;
+  }
+}
+
+/* 阅读进度条 */
+.reading-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  width: 0;
+  background: var(--active-color, #38849e);
+  z-index: 1100;
+  transition: width 0.1s linear;
+}
+
+/* 移动端目录折叠按钮（桌面隐藏） */
+.toc-toggle {
+  display: none;
+}
+@media (max-width: 767.98px) {
+  .toc-toggle {
+    display: block;
+    width: 100%;
+    padding: 0.5rem 1rem;
+    margin-bottom: 0.75rem;
+    font-size: 0.9rem;
+    color: var(--text-dark, #333);
+    background: #fff;
+    border: 1px solid var(--grey-l3, #dedede);
+    border-radius: 4px;
+    text-align: left;
+    cursor: pointer;
+  }
+  .toc-toggle::after {
+    content: " ▾";
+    float: right;
+    color: var(--text-light, #959595);
+  }
+  .toc-toggle.open::after {
+    content: " ▴";
+    float: right;
+  }
+  .toc-nav {
+    display: none;
+  }
+  .toc-nav.open {
+    display: block;
+  }
+}
