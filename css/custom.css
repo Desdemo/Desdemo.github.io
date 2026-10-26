@@ -34,6 +34,17 @@ body {
   font-display: swap;
 }
 
+/* 页脚贴底：内容不足一屏时也停在窗口底部，不悬空。
+   排除首页（首页 hero 靠绝对定位撑高，body 成 flex 容器会被抽成 0 高） */
+body:has(> main.post-main-wrapper):not(:has(> section)) {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+body:has(> main.post-main-wrapper):not(:has(> section)) > main {
+  flex: 1 0 auto;
+}
+
 /* 正文：18px + 2.0 行高，中文长文更透气 */
 .post-content {
   font-family:
