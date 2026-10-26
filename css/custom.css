@@ -156,6 +156,11 @@ body:has(> main.post-main-wrapper):not(:has(> section)) > main {
   .single-post {
     padding: 1.5rem 1rem !important;
   }
+
+  /* 列表/关于页外壳：8rem 左右内边距在窄屏下把正文压成一行一字 */
+  .container.content {
+    padding: 0 0.5rem;
+  }
   .post-content {
     font-size: 17px;
     line-height: 1.85;
